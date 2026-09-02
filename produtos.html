@@ -276,6 +276,7 @@ hr.dp-sep{border:none;border-top:1px solid var(--border);margin:.75rem 0}
     <select id="f-pp"><option value="50">50</option><option value="100" selected>100</option><option value="250">250</option><option value="0">Todos</option></select>
   </div>
   <button class="btn btn-ghost" onclick="clearFilters()">✕ Limpar</button>
+  <button class="btn btn-ghost" onclick="exportToExcel()" title="Exportar os registos filtrados para Excel">📤 Exportar</button>
 </div>
 
 <div id="stats-bar"><span id="stats-text">—</span><button class="clear-link" id="clear-btn" onclick="clearFilters()" style="display:none">✕ Limpar filtros</button></div>
@@ -551,6 +552,43 @@ function showShareToast(msg){
   t.style.opacity='1';
   clearTimeout(t._hideTimer);
   t._hideTimer=setTimeout(()=>{ t.style.opacity='0'; },1800);
+}
+
+/* Exporta os registos atualmente filtrados para Excel — mesma estrutura do
+   usos.html: título, dados, e por fim o crédito/fonte. Sem coluna Estado
+   (redundante quando já se filtrou por ele), mantendo as restantes. */
+function exportToExcel(){
+  if(!FILT.length){ alert('Não há registos para exportar.'); return; }
+  const cols=[
+    {key:'designacao',label:'Designação Comercial',wch:24},
+    {key:'numero',label:'Nº',wch:8},
+    {key:'titular',label:'Titular',wch:18},
+    {key:'substancia',label:'Substância Ativa',wch:26},
+    {key:'formulacao',label:'Formulação',wch:12},
+    {key:'funcao_tipo',label:'Função',wch:16},
+    {key:'mpb',label:'MPB',wch:8},
+    {key:'baixo_risco',label:'Baixo Risco',wch:12},
+  ];
+  const now=new Date();
+  const dataStr=now.toLocaleDateString('pt-PT')+' '+now.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'});
+  const aoa=[
+    ['AgroFito — Produtos Fitofarmacêuticos'],
+    [],
+    cols.map(c=>c.label),
+    ...FILT.map(r=>cols.map(c=>c.key==='mpb'||c.key==='baixo_risco'?(r[c.key]||'Não'):(r[c.key]||''))),
+    [],
+    ['Exportado em: '+dataStr],
+    ['agrofito.org · Francisco Cabral'],
+    ['Fonte: DGAV / SIFITO — consulte sifito.dgav.pt para confirmação. Dados atualizados semanalmente.'],
+  ];
+  const ws=XLSX.utils.aoa_to_sheet(aoa);
+  ws['!cols']=cols.map(c=>({wch:c.wch}));
+  const headerRowIdx=2;
+  const lastDataRowIdx=headerRowIdx+FILT.length;
+  ws['!autofilter']={ref:XLSX.utils.encode_range({s:{r:headerRowIdx,c:0},e:{r:lastDataRowIdx,c:cols.length-1}})};
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,'Produtos Fitofarmacêuticos');
+  XLSX.writeFile(wb,'agrofito_produtos_'+now.toISOString().slice(0,10)+'.xlsx');
 }
 
 function syncURLFromFilters(){

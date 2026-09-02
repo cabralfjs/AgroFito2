@@ -365,6 +365,7 @@ hr.dp-sep{border:none;border-top:1px solid var(--border);margin:.75rem 0}
     </select>
   </div>
   <button class="btn btn-ghost" onclick="clearFilters()">✕ Limpar</button>
+  <button class="btn btn-ghost" onclick="exportToExcel()" title="Exportar os registos filtrados para Excel">📤 Exportar</button>
 </div>
 
 <!-- STATS BAR -->
@@ -744,6 +745,43 @@ function showShareToast(msg){
   t.style.opacity='1';
   clearTimeout(t._hideTimer);
   t._hideTimer=setTimeout(()=>{ t.style.opacity='0'; },1800);
+}
+
+/* Exporta os registos atualmente filtrados para Excel, no formato acordado:
+   título, dados, e por fim o crédito/fonte — sem cores, negrito nem logótipo
+   (a biblioteca gratuita xlsx.js não suporta esse tipo de formatação). */
+function exportToExcel(){
+  if(!FILT.length){ alert('Não há registos para exportar.'); return; }
+  const cols=[
+    {key:'cultura',label:'Cultura',wch:18},
+    {key:'inimigo',label:'Inimigo / Efeito',wch:22},
+    {key:'nome_cient',label:'Nome Científico',wch:22},
+    {key:'produto',label:'Produto',wch:20},
+    {key:'substancia',label:'Substância Ativa',wch:26},
+    {key:'numero',label:'Nº Auth.',wch:10},
+    {key:'validade',label:'Validade',wch:12},
+    {key:'dose',label:'Dose',wch:16},
+  ];
+  const now=new Date();
+  const dataStr=now.toLocaleDateString('pt-PT')+' '+now.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'});
+  const aoa=[
+    ['AgroFito — Condições de Utilização'],
+    [],
+    cols.map(c=>c.label),
+    ...FILT.map(r=>cols.map(c=>r[c.key]||'')),
+    [],
+    ['Exportado em: '+dataStr],
+    ['agrofito.org · Francisco Cabral'],
+    ['Fonte: DGAV / SIFITO — consulte sifito.dgav.pt para confirmação. Dados atualizados semanalmente.'],
+  ];
+  const ws=XLSX.utils.aoa_to_sheet(aoa);
+  ws['!cols']=cols.map(c=>({wch:c.wch}));
+  const headerRowIdx=2;
+  const lastDataRowIdx=headerRowIdx+FILT.length;
+  ws['!autofilter']={ref:XLSX.utils.encode_range({s:{r:headerRowIdx,c:0},e:{r:lastDataRowIdx,c:cols.length-1}})};
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,'Condições de Utilização');
+  XLSX.writeFile(wb,'agrofito_usos_'+now.toISOString().slice(0,10)+'.xlsx');
 }
 
 function syncURLFromFilters(){
