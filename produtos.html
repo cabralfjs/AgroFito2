@@ -168,10 +168,10 @@ hr.dp-sep{border:none;border-top:1px solid var(--border);margin:.75rem 0}
     word-break:break-word;overflow-wrap:break-word;padding:.45rem .25rem;font-size:.66rem}
   thead th{font-size:.54rem;line-height:1.25;letter-spacing:0;text-transform:none}
   table th:nth-child(1), table td:nth-child(1){width:11%!important}
-  table th:nth-child(2), table td:nth-child(2){width:35%!important}
+  table th:nth-child(2), table td:nth-child(2){width:30%!important}
   table th:nth-child(5), table td:nth-child(5){width:34%!important}
-  table th:nth-child(10), table td:nth-child(10){width:20%!important;padding:.45rem .1rem}
-  .btn-detail{width:26px;height:26px}
+  table th:nth-child(10), table td:nth-child(10){width:25%!important;padding:.45rem .05rem}
+  .btn-detail{width:24px;height:24px}
   .btn-detail-icon{font-size:.8rem}
 }
 </style>
@@ -277,6 +277,10 @@ hr.dp-sep{border:none;border-top:1px solid var(--border);margin:.75rem 0}
   </div>
   <button class="btn btn-ghost" onclick="clearFilters()">✕ Limpar</button>
   <button class="btn btn-ghost" onclick="exportToExcel()" title="Exportar os registos filtrados para Excel">📤 Exportar</button>
+  <label style="display:flex;align-items:center;gap:.35rem;font-size:.8rem;font-weight:600;color:var(--ink);cursor:pointer;white-space:nowrap">
+    <input type="checkbox" id="f-fav-only" onchange="applyFilters()" style="width:16px;height:16px;cursor:pointer">
+    ⭐ Só favoritos
+  </label>
 </div>
 
 <div id="stats-bar"><span id="stats-text">—</span><button class="clear-link" id="clear-btn" onclick="clearFilters()" style="display:none">✕ Limpar filtros</button></div>
@@ -333,7 +337,21 @@ function openDB(){return new Promise((res,rej)=>{const req=indexedDB.open(DB_NAM
 async function dbGet(key){const db=await openDB();return new Promise((res,rej)=>{const req=db.transaction(STORE,'readonly').objectStore(STORE).get(key);req.onsuccess=e=>res(e.target.result);req.onerror=e=>rej(e.target.error);})}
 async function dbSet(key,val){const db=await openDB();return new Promise((res,rej)=>{const req=db.transaction(STORE,'readwrite').objectStore(STORE).put(val,key);req.onsuccess=()=>res();req.onerror=e=>rej(e.target.error);})}
 
+/* ══ FAVORITOS ══ */
+let FAVORITES=new Set();
+function fidOf(r){ return [r.numero,r.designacao,r.titular].join('|'); }
+async function loadFavorites(){
+  FAVORITES=new Set((await dbGet('favoritos_produtos'))||[]);
+}
+function toggleFavoriteAt(idx){
+  const r=FILT[idx]; if(!r) return;
+  if(FAVORITES.has(r._fid)) FAVORITES.delete(r._fid); else FAVORITES.add(r._fid);
+  dbSet('favoritos_produtos',[...FAVORITES]);
+  if(document.getElementById('f-fav-only')?.checked) applyFilters(); else render();
+}
+
 async function init(){
+  await loadFavorites();
   showLoading('A verificar dados em cache…');
   try{
     let found=false;
@@ -495,6 +513,7 @@ async function loadDataset(key){
 function rebuildALL(){
   const estadoFilter=document.getElementById('f-estado')?.value||'';
   ALL=estadoFilter?(DATASETS[estadoFilter]||[]):Object.values(DATASETS).flat();
+  ALL.forEach(r=>{ if(!r._fid) r._fid=fidOf(r); });
 }
 
 function updateStickyTop(){
@@ -721,8 +740,10 @@ function applyFilters(){
   const fMpb=document.getElementById('f-mpb').value;
   const fBaixo=document.getElementById('f-baixo').value;
   const estado=document.getElementById('f-estado').value;
+  const favOnly=document.getElementById('f-fav-only')?.checked;
 
   FILT=ALL.filter(r=>{
+    if(favOnly && !FAVORITES.has(r._fid)) return false;
     if(tit.exact&&r.titular!==tit.exact)return false;
     else if(!tit.exact&&tit.text&&!r.titular?.toLowerCase().includes(tit.text.toLowerCase()))return false;
     if(sub.exact&&r.substancia!==sub.exact)return false;
@@ -739,7 +760,7 @@ function applyFilters(){
   });
   if(SORT_COL){FILT.sort((a,b)=>{const av=(a[SORT_COL]||'').toLowerCase(),bv=(b[SORT_COL]||'').toLowerCase();return SORT_ASC?av.localeCompare(bv,'pt'):bv.localeCompare(av,'pt');});}
   PAGE=1;
-  const hasF=q||tit.text||sub.text||fTipo||fForm||fMpb||fBaixo||estado;
+  const hasF=q||tit.text||sub.text||fTipo||fForm||fMpb||fBaixo||estado||favOnly;
   document.getElementById('clear-btn').style.display=hasF?'':'none';
   syncURLFromFilters();
   render();
@@ -750,6 +771,7 @@ function setSort(col){if(SORT_COL===col)SORT_ASC=!SORT_ASC;else{SORT_COL=col;SOR
 function clearFilters(){
   document.getElementById('search').value='';
   ['f-funcao-tipo','f-formulacao','f-mpb','f-baixo','f-estado'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-fav-only').checked=false;
   cbSelect('titular','');cbSelect('substancia','');
   SORT_COL=null;SORT_ASC=true;rebuildALL();buildSelects();updateCascadeSelectsProd();applyFilters();
 }
@@ -760,7 +782,7 @@ function render(){
   PAGE=Math.min(PAGE,pages||1);const slice=PP?FILT.slice((PAGE-1)*PP,PAGE*PP):FILT;
   document.getElementById('stats-text').innerHTML=`<span class="pill">${total.toLocaleString('pt')}</span> registos`+(total!==ALL.length?` de <span class="pill pill-gray">${ALL.length.toLocaleString('pt')}</span> totais`:'');
   if(!slice.length){document.getElementById('table-wrap').innerHTML=`<div class="empty"><div class="icon">🔍</div><h3>Sem resultados</h3><p>Tente alterar os filtros.</p></div>`;document.getElementById('pagination').innerHTML='';return;}
-  const thdr=COLS.map(c=>{const act=SORT_COL===c.key,ic=act?(SORT_ASC?'▲':'▼'):'⇅';return `<th onclick="setSort('${c.key}')" class="${act?'sorted':''}" style="min-width:${c.w}">${esc(c.label)}<span class="sort-ic">${ic}</span></th>`;}).join('')+`<th style="width:52px;text-align:center" title="Ver ficha completa">Detalhe</th>`;
+  const thdr=COLS.map(c=>{const act=SORT_COL===c.key,ic=act?(SORT_ASC?'▲':'▼'):'⇅';return `<th onclick="setSort('${c.key}')" class="${act?'sorted':''}" style="min-width:${c.w}">${esc(c.label)}<span class="sort-ic">${ic}</span></th>`;}).join('')+`<th class="col-detail" style="width:92px;text-align:center" title="Ver ficha completa">Detalhe</th>`;
   const tbody=slice.map((r,i)=>{
     const idx=(PAGE-1)*(PP||0)+i;
     return `<tr>
@@ -773,7 +795,15 @@ function render(){
       <td>${funcaoTag(r.funcao_tipo)}</td>
       <td class="text-center">${r.mpb==='Sim'?'<span class="flag-sim">MPB</span>':'<span class="flag-nao">—</span>'}</td>
       <td class="text-center">${r.baixo_risco==='Sim'?'<span class="flag-sim">✓</span>':'<span class="flag-nao">—</span>'}</td>
-      <td style="text-align:center"><button class="btn-detail" onclick="showDetail(${idx})" title="Ver ficha"><span class="btn-detail-icon">📋</span></button></td>
+      <td class="col-detail" style="text-align:center">
+        <div style="display:flex;gap:4px;justify-content:center">
+          <button class="btn-detail" onclick="toggleFavoriteAt(${idx})"
+            title="${FAVORITES.has(r._fid)?'Remover dos favoritos':'Adicionar aos favoritos'}">
+            <span class="btn-detail-icon">${FAVORITES.has(r._fid)?'⭐':'☆'}</span>
+          </button>
+          <button class="btn-detail" onclick="showDetail(${idx})" title="Ver ficha"><span class="btn-detail-icon">📋</span></button>
+        </div>
+      </td>
     </tr>`;
   }).join('');
   document.getElementById('table-wrap').innerHTML=`<table><thead><tr>${thdr}</tr></thead><tbody>${tbody}</tbody></table>`;
