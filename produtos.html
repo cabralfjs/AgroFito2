@@ -573,6 +573,7 @@ function showShareToast(msg){
   t._hideTimer=setTimeout(()=>{ t.style.opacity='0'; },1800);
 }
 
+<<<<<<< Updated upstream
 /* Exporta os registos atualmente filtrados para Excel — mesma estrutura do
    usos.html: título, dados, e por fim o crédito/fonte. Sem coluna Estado
    (redundante quando já se filtrou por ele), mantendo as restantes. */
@@ -610,6 +611,8 @@ function exportToExcel(){
   XLSX.writeFile(wb,'agrofito_produtos_'+now.toISOString().slice(0,10)+'.xlsx');
 }
 
+=======
+>>>>>>> Stashed changes
 function syncURLFromFilters(){
   const params=new URLSearchParams();
   const q=document.getElementById('search').value.trim();

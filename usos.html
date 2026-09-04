@@ -766,6 +766,7 @@ function showShareToast(msg){
   t._hideTimer=setTimeout(()=>{ t.style.opacity='0'; },1800);
 }
 
+<<<<<<< Updated upstream
 /* Exporta os registos atualmente filtrados para Excel, no formato acordado:
    título, dados, e por fim o crédito/fonte — sem cores, negrito nem logótipo
    (a biblioteca gratuita xlsx.js não suporta esse tipo de formatação). */
@@ -803,6 +804,8 @@ function exportToExcel(){
   XLSX.writeFile(wb,'agrofito_usos_'+now.toISOString().slice(0,10)+'.xlsx');
 }
 
+=======
+>>>>>>> Stashed changes
 function syncURLFromFilters(){
   const params=new URLSearchParams();
   const q=document.getElementById('search').value.trim();
