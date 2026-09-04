@@ -116,6 +116,38 @@ header h1{font-size:.95rem;font-weight:600;flex:1;letter-spacing:-.01em}
 .legend-item{font-weight:500;white-space:nowrap}
 .legend-sep{color:var(--border2)}
 
+#changes-banner{display:none}
+#changes-banner.active{display:block}
+.cb-box{
+  margin:1rem 1.5rem 0;padding:.8rem 1.1rem;border-radius:10px;
+  background:#fff8e1;border:1.5px solid #f5d060;color:#7a5200;
+  font-size:.82rem;line-height:1.5;
+}
+.cb-box strong{color:#5a3d00}
+.cb-toggle{background:none;border:none;color:#7a5200;text-decoration:underline;
+  cursor:pointer;font-size:.8rem;font-family:inherit;font-weight:600;padding:0;margin-left:.3rem}
+.cb-list{margin-top:.6rem;padding-top:.6rem;border-top:1px solid #f0dca0;display:none}
+.cb-list.open{display:block}
+.cb-list div{padding:.25rem 0;font-size:.78rem;border-bottom:1px dashed #f0dca0}
+.cb-list div:last-child{border-bottom:none}
+
+#validade-bar{
+  display:none;flex-wrap:wrap;align-items:center;gap:.5rem;
+  padding:.5rem 1.5rem;background:var(--cream);
+  border-bottom:1px solid var(--border);
+  position:sticky;left:0;
+}
+#validade-bar.active{display:flex}
+.vb-label{font-weight:700;color:var(--muted);font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+.vb-chip{
+  background:#fff;border:1.5px solid var(--border);border-radius:20px;
+  padding:.3rem .7rem;font-size:.72rem;font-weight:600;color:var(--ink);
+  cursor:pointer;white-space:nowrap;transition:all .15s;font-family:inherit;
+}
+.vb-chip:hover{border-color:var(--g3)}
+.vb-chip.active{background:var(--g2);border-color:var(--g2);color:#fff}
+.vb-count{font-family:ui-monospace,SFMono-Regular,'Cascadia Code','Roboto Mono',Consolas,monospace;opacity:.75}
+
 /* STICKY FIX: sem overflow no table-wrap (para não criar um "scroll container" que
    estragaria a referência do thead sticky). O scroll horizontal passa a ser o da
    própria página; o cabeçalho/toolbar/stats/legenda ficam "sticky left:0" para se
@@ -390,6 +422,17 @@ hr.dp-sep{border:none;border-top:1px solid var(--border);margin:.75rem 0}
   <span class="legend-item" style="color:#333">⚫ Cancelada — Venda e Util. Interditas</span>
 </div>
 
+<div id="changes-banner"></div>
+
+<div id="validade-bar">
+  <span class="vb-label">⏰ Validades:</span>
+  <button class="vb-chip vb-past" data-k="exp_week" onclick="toggleDateFilter('exp_week')">🔴 Expiraram esta semana <span class="vb-count" id="vb-exp_week">0</span></button>
+  <button class="vb-chip vb-past" data-k="exp_month" onclick="toggleDateFilter('exp_month')">🟠 Expiraram este mês <span class="vb-count" id="vb-exp_month">0</span></button>
+  <button class="vb-chip vb-future" data-k="due_week" onclick="toggleDateFilter('due_week')">🟡 Expiram numa semana <span class="vb-count" id="vb-due_week">0</span></button>
+  <button class="vb-chip vb-future" data-k="due_month" onclick="toggleDateFilter('due_month')">🟡 Expiram num mês <span class="vb-count" id="vb-due_month">0</span></button>
+  <button class="vb-chip vb-future" data-k="due_180" onclick="toggleDateFilter('due_180')">⚪ Expiram em 180 dias <span class="vb-count" id="vb-due_180">0</span></button>
+</div>
+
 <div id="table-wrap"></div>
 <div id="pagination"></div>
 
@@ -465,6 +508,46 @@ function fidOf(r){ return [r.numero,r.cultura,r.inimigo,r.produto,r.dose].join('
 async function loadFavorites(){
   FAVORITES=new Set((await dbGet('favoritos_usos'))||[]);
 }
+/* ══════════════ PAINEL DE VALIDADES ══════════════
+   Categorias calculadas inteiramente no browser, a partir do campo
+   'validade' já existente em cada registo — não depende de nenhum
+   ficheiro externo nem do workflow de atualização semanal. */
+let DATE_FILTER=null;
+
+function daysUntil(dateStr){
+  if(!dateStr) return null;
+  const d=new Date(dateStr+'T00:00:00');
+  if(isNaN(d)) return null;
+  const today=new Date(); today.setHours(0,0,0,0);
+  return Math.round((d-today)/86400000);
+}
+
+function matchesDateFilter(r,key){
+  const diff=daysUntil(r.validade);
+  if(diff===null) return false;
+  switch(key){
+    case 'exp_week':  return diff<0 && diff>=-7;
+    case 'exp_month': return diff<0 && diff>=-30;
+    case 'due_week':  return diff>=0 && diff<=7;
+    case 'due_month': return diff>=0 && diff<=30;
+    case 'due_180':   return diff>=0 && diff<=180;
+  }
+  return false;
+}
+
+function updateValidadeBar(){
+  const keys=['exp_week','exp_month','due_week','due_month','due_180'];
+  const counts=Object.fromEntries(keys.map(k=>[k,0]));
+  ALL.forEach(r=>{ keys.forEach(k=>{ if(matchesDateFilter(r,k)) counts[k]++; }); });
+  keys.forEach(k=>{ const el=document.getElementById('vb-'+k); if(el) el.textContent=counts[k]; });
+}
+
+function toggleDateFilter(key){
+  DATE_FILTER=(DATE_FILTER===key)?null:key;
+  document.querySelectorAll('.vb-chip').forEach(b=>b.classList.toggle('active',b.dataset.k===DATE_FILTER));
+  applyFilters();
+}
+
 function toggleFavoriteAt(idx){
   const r=FILT[idx]; if(!r) return;
   if(FAVORITES.has(r._fid)) FAVORITES.delete(r._fid); else FAVORITES.add(r._fid);
@@ -715,6 +798,37 @@ function updateStickyTop(){
   document.documentElement.style.setProperty('--sticky-top',(hh+th)+'px');
 }
 
+/* ══════════════ BANNER "O QUE MUDOU" ══════════════
+   Lê o alteracoes.json gerado pelo workflow semanal (compute_changes.py).
+   Se o ficheiro não existir ainda, ou não houver nada a assinalar,
+   simplesmente não mostra nada — falha em silêncio. */
+async function loadChangesBanner(){
+  try{
+    const r=await fetch('./alteracoes.json',{cache:'no-cache'});
+    if(!r.ok) return;
+    const data=await r.json();
+    const u=data.usos;
+    if(!u || (!u.novas_canceladas && !u.reativadas)) return;
+
+    const partes=[];
+    if(u.novas_canceladas) partes.push(`<strong>${u.novas_canceladas}</strong> ficaram cancelad${u.novas_canceladas===1?'o':'os'}`);
+    if(u.reativadas) partes.push(`<strong>${u.reativadas}</strong> volt${u.reativadas===1?'ou':'aram'} a ficar autorizad${u.reativadas===1?'o':'os'}`);
+
+    const itens=[...(u.detalhe_canceladas||[]),...(u.detalhe_reativadas||[])];
+    const listaHtml=itens.map(it=>
+      `<div>${esc(it.label)} — <em>${esc(it.de)} → ${esc(it.para)}</em></div>`
+    ).join('');
+
+    document.getElementById('changes-banner').innerHTML=`
+      <div class="cb-box">
+        ⚠️ Esta semana: ${partes.join(' · ')}.
+        <button class="cb-toggle" onclick="this.parentElement.querySelector('.cb-list').classList.toggle('open')">ver detalhes</button>
+        <div class="cb-list">${listaHtml}</div>
+      </div>`;
+    document.getElementById('changes-banner').classList.add('active');
+  }catch(e){ /* sem alteracoes.json — não mostra nada */ }
+}
+
 function showApp(){
   document.getElementById('import-screen').classList.remove('active');
   rebuildALL();
@@ -723,6 +837,9 @@ function showApp(){
   document.getElementById('toolbar').classList.add('active');
   document.getElementById('stats-bar').classList.add('active');
   document.getElementById('legend-bar').classList.add('active');
+  document.getElementById('validade-bar').classList.add('active');
+  loadChangesBanner();
+  updateValidadeBar();
   requestAnimationFrame(updateStickyTop);
   window.addEventListener('resize',updateStickyTop);
   restoreFiltersFromURL();
@@ -766,7 +883,6 @@ function showShareToast(msg){
   t._hideTimer=setTimeout(()=>{ t.style.opacity='0'; },1800);
 }
 
-<<<<<<< Updated upstream
 /* Exporta os registos atualmente filtrados para Excel, no formato acordado:
    título, dados, e por fim o crédito/fonte — sem cores, negrito nem logótipo
    (a biblioteca gratuita xlsx.js não suporta esse tipo de formatação). */
@@ -804,8 +920,6 @@ function exportToExcel(){
   XLSX.writeFile(wb,'agrofito_usos_'+now.toISOString().slice(0,10)+'.xlsx');
 }
 
-=======
->>>>>>> Stashed changes
 function syncURLFromFilters(){
   const params=new URLSearchParams();
   const q=document.getElementById('search').value.trim();
@@ -1053,6 +1167,7 @@ function applyFilters(){
 
   FILT=ALL.filter(r=>{
     if(favOnly && !FAVORITES.has(r._fid)) return false;
+    if(DATE_FILTER && !matchesDateFilter(r,DATE_FILTER)) return false;
     if(cult.exact && r.cultura!==cult.exact) return false;
     else if(!cult.exact && cult.text && !r.cultura?.toLowerCase().includes(cult.text.toLowerCase())) return false;
     if(func && !r.funcao?.startsWith(func)) return false;
@@ -1081,7 +1196,7 @@ function applyFilters(){
   }
 
   PAGE=1;
-  const hasF=q||cult.text||func||inim.text||nomc.text||estado||favOnly;
+  const hasF=q||cult.text||func||inim.text||nomc.text||estado||favOnly||DATE_FILTER;
   document.getElementById('clear-btn').style.display=hasF?'':'none';
   syncURLFromFilters();
   render();
@@ -1323,6 +1438,7 @@ document.getElementById('f-estado').addEventListener('change', async ()=>{
   rebuildALL();
   buildSelects();
   updateHeaderMeta();
+  updateValidadeBar();
   PAGE=1; applyFilters();
 });
 
@@ -1331,6 +1447,8 @@ function clearFilters(){
   document.getElementById('f-funcao').value='';
   document.getElementById('f-estado').value='';
   document.getElementById('f-fav-only').checked=false;
+  DATE_FILTER=null;
+  document.querySelectorAll('.vb-chip').forEach(b=>b.classList.remove('active'));
   cbSelect('cultura',''); cbSelect('inimigo',''); cbSelect('nomc','');
   SORT_COL=null; SORT_ASC=true;
   rebuildALL();
