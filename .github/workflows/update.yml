@@ -47,6 +47,8 @@ jobs:
           if git diff --staged --quiet; then
             echo "Sem alterações — nada a fazer."
           else
+            python compute_changes.py
+            git add alteracoes.json
             HOJE=$(date +'%d/%m/%Y')
             git commit -m "🌿 AgroFito — dados actualizados $HOJE"
             git pull --rebase origin main
