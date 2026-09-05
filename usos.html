@@ -106,8 +106,6 @@ header h1{font-size:.95rem;font-weight:600;flex:1;letter-spacing:-.01em}
 .btn-detail-icon{font-size:.95rem;line-height:1;pointer-events:none}
 
 /* STATS BAR */
-#stats-bar{display:none;flex-wrap:wrap;gap:.75rem;padding:.5rem 1.5rem;background:var(--cream);border-bottom:1px solid var(--border);font-size:.76rem;color:var(--muted);align-items:center;position:sticky;left:0}
-#stats-bar.active{display:flex}
 .pill{background:var(--tag-bg);color:var(--tag-fg);padding:2px 9px;border-radius:20px;font-weight:700;font-family:ui-monospace,SFMono-Regular,'Cascadia Code','Roboto Mono',Consolas,monospace;font-size:.72rem}
 .pill-gray{background:#eee;color:var(--muted)}
 #legend-bar{
@@ -264,7 +262,7 @@ hr.dp-sep{border:none;border-top:1px solid var(--border);margin:.75rem 0}
   .dp-grid{grid-template-columns:1fr}
   /* Em mobile a toolbar deixa de ficar fixa — senão ocupa o ecrã quase todo
      e sobra pouquíssimo espaço para ver a tabela. Só o cabeçalho fica sticky. */
-  #toolbar, #stats-bar, #legend-bar{position:static;left:auto}
+  #toolbar, #legend-bar{position:static;left:auto}
   #table-wrap{padding:.5rem .6rem 1rem}
   /* Modo compacto: mantém só Estado, Cultura, Produto, Dose e Detalhe visíveis;
      o resto continua acessível no painel de Detalhe (📋) */
@@ -414,12 +412,6 @@ hr.dp-sep{border:none;border-top:1px solid var(--border);margin:.75rem 0}
     <input type="checkbox" id="f-fav-only" onchange="applyFilters()" style="width:16px;height:16px;cursor:pointer">
     ⭐ Só favoritos
   </label>
-</div>
-
-<!-- STATS BAR -->
-<div id="stats-bar">
-  <span id="stats-text">—</span>
-  <button class="clear-link" id="clear-btn" onclick="clearFilters()" style="display:none">✕ Limpar filtros</button>
 </div>
 
 <!-- LEGEND BAR -->
@@ -677,7 +669,6 @@ async function openUpdateUI(){
   hideLoading();
   document.getElementById('import-screen').classList.add('active');
   document.getElementById('toolbar').classList.remove('active');
-  document.getElementById('stats-bar').classList.remove('active');
   if(document.getElementById('legend-bar'))
     document.getElementById('legend-bar').classList.remove('active');
   document.getElementById('table-wrap').innerHTML='';
@@ -891,7 +882,6 @@ function showApp(){
   updateHeaderMeta();
   buildSelects();
   document.getElementById('toolbar').classList.add('active');
-  document.getElementById('stats-bar').classList.add('active');
   document.getElementById('legend-bar').classList.add('active');
   document.getElementById('validade-bar').classList.add('active');
   loadChangesBanner();
@@ -1263,8 +1253,6 @@ function applyFilters(){
   }
 
   PAGE=1;
-  const hasF=q||cult.text||func||inim.text||nomc.text||estado||favOnly||DATE_FILTER;
-  document.getElementById('clear-btn').style.display=hasF?'':'none';
   syncURLFromFilters();
   render();
 }
@@ -1290,11 +1278,6 @@ function render(){
   const pages=PP?Math.ceil(total/PP):1;
   PAGE=Math.min(PAGE,pages||1);
   const slice=PP?FILT.slice((PAGE-1)*PP,PAGE*PP):FILT;
-
-  document.getElementById('stats-text').innerHTML=
-    `<span class="pill">${total.toLocaleString('pt')}</span> registos`+
-    (total!==ALL.length
-      ?` de <span class="pill pill-gray">${ALL.length.toLocaleString('pt')}</span> totais`:'');
 
   if(!slice.length){
     document.getElementById('table-wrap').innerHTML=

@@ -64,8 +64,6 @@ header h1{font-size:.88rem;font-weight:700;flex:1;letter-spacing:-.01em}
 .cb-count{padding:.3rem .75rem;font-size:.68rem;color:var(--muted);background:#f8f8f8;border-bottom:1px solid var(--border);font-family:ui-monospace,SFMono-Regular,'Cascadia Code','Roboto Mono',Consolas,monospace}
 .cb-empty{padding:.75rem;font-size:.78rem;color:var(--muted);text-align:center}
 /* STATS */
-#stats-bar{display:none;flex-wrap:wrap;gap:.75rem;padding:.55rem 1.5rem;background:var(--cream);border-bottom:1px solid var(--border);font-size:.76rem;color:var(--muted);align-items:center;position:sticky;left:0}
-#stats-bar.active{display:flex}
 .pill{background:var(--tag-bg);color:var(--tag-fg);padding:2px 9px;border-radius:20px;font-weight:700;font-family:ui-monospace,SFMono-Regular,'Cascadia Code','Roboto Mono',Consolas,monospace;font-size:.72rem}
 .pill-gray{background:#eee;color:var(--muted)}
 .clear-link{margin-left:auto;cursor:pointer;color:var(--red);font-size:.75rem;font-weight:600;text-decoration:underline;background:none;border:none}
@@ -156,7 +154,7 @@ hr.dp-sep{border:none;border-top:1px solid var(--border);margin:.75rem 0}
   .dp-grid{grid-template-columns:1fr}
   /* Em mobile a toolbar deixa de ficar fixa — senão ocupa o ecrã quase todo
      e sobra pouquíssimo espaço para ver a tabela. Só o cabeçalho fica sticky. */
-  #toolbar, #stats-bar, #legend-bar{position:static;left:auto}
+  #toolbar, #legend-bar{position:static;left:auto}
   #table-wrap{padding:.5rem .6rem 1rem}
   /* Modo compacto: mantém só Estado, Designação Comercial, Substância Ativa e Detalhe visíveis;
      o resto continua acessível no painel de Detalhe */
@@ -293,7 +291,7 @@ hr.dp-sep{border:none;border-top:1px solid var(--border);margin:.75rem 0}
   </label>
 </div>
 
-<div id="stats-bar"><span id="stats-text">—</span><button class="clear-link" id="clear-btn" onclick="clearFilters()" style="display:none">✕ Limpar filtros</button></div>
+
 
 <div id="legend-bar">
   <span class="legend-title">Legenda:</span>
@@ -427,7 +425,6 @@ async function openUpdateUI(){
   hideLoading();
   document.getElementById('import-screen').classList.add('active');
   document.getElementById('toolbar').classList.remove('active');
-  document.getElementById('stats-bar').classList.remove('active');
   if(document.getElementById('legend-bar'))
     document.getElementById('legend-bar').classList.remove('active');
   document.getElementById('table-wrap').innerHTML='';
@@ -538,7 +535,6 @@ function showApp(){
   document.getElementById('import-screen').classList.remove('active');
   rebuildALL();updateHeaderMeta();buildSelects();
   document.getElementById('toolbar').classList.add('active');
-  document.getElementById('stats-bar').classList.add('active');
   document.getElementById('legend-bar').classList.add('active');
   requestAnimationFrame(updateStickyTop);
   window.addEventListener('resize',updateStickyTop);
@@ -782,8 +778,6 @@ function applyFilters(){
   });
   if(SORT_COL){FILT.sort((a,b)=>{const av=(a[SORT_COL]||'').toLowerCase(),bv=(b[SORT_COL]||'').toLowerCase();return SORT_ASC?av.localeCompare(bv,'pt'):bv.localeCompare(av,'pt');});}
   PAGE=1;
-  const hasF=q||tit.text||sub.text||fTipo||fForm||fMpb||fBaixo||estado||favOnly;
-  document.getElementById('clear-btn').style.display=hasF?'':'none';
   syncURLFromFilters();
   render();
 }
@@ -802,7 +796,6 @@ function clearFilters(){
 function render(){
   const total=FILT.length,pages=PP?Math.ceil(total/PP):1;
   PAGE=Math.min(PAGE,pages||1);const slice=PP?FILT.slice((PAGE-1)*PP,PAGE*PP):FILT;
-  document.getElementById('stats-text').innerHTML=`<span class="pill">${total.toLocaleString('pt')}</span> registos`+(total!==ALL.length?` de <span class="pill pill-gray">${ALL.length.toLocaleString('pt')}</span> totais`:'');
   if(!slice.length){document.getElementById('table-wrap').innerHTML=`<div class="empty"><div class="icon">🔍</div><h3>Sem resultados</h3><p>Tente alterar os filtros.</p></div>`;document.getElementById('pagination').innerHTML='';return;}
   const thdr=COLS.map(c=>{const act=SORT_COL===c.key,ic=act?(SORT_ASC?'▲':'▼'):'⇅';return `<th onclick="setSort('${c.key}')" class="${act?'sorted':''}" style="min-width:${c.w}">${esc(c.label)}<span class="sort-ic">${ic}</span></th>`;}).join('')+`<th class="col-detail" style="width:92px;text-align:center" title="Ver ficha completa">Detalhe</th>`;
   const tbody=slice.map((r,i)=>{
