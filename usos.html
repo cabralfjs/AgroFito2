@@ -137,13 +137,13 @@ header h1{font-size:.95rem;font-weight:600;flex:1;letter-spacing:-.01em}
 .cb-list div:last-child{border-bottom:none}
 
 #validade-bar{
-  display:none;flex-direction:column;gap:.4rem;
+  display:none;flex-wrap:wrap;align-items:center;gap:.5rem;
   padding:.5rem 1.5rem;background:var(--cream);
   border-bottom:1px solid var(--border);
   position:sticky;left:0;
 }
 #validade-bar.active{display:flex}
-.vb-row{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}
+.vb-sep{width:1px;align-self:stretch;background:var(--border);margin:0 .2rem}
 .vb-label{font-weight:700;color:var(--muted);font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
 .vb-chip{
   background:#fff;border:1.5px solid var(--border);border-radius:20px;
@@ -437,24 +437,22 @@ hr.dp-sep{border:none;border-top:1px solid var(--border);margin:.75rem 0}
 <div id="changes-banner"></div>
 
 <div id="validade-bar">
-  <div class="vb-row">
-    <span class="vb-label" title="Só produtos Autorizados — a validade da autorização está a aproximar-se do fim">🔄 Autorizações a Cancelar:</span>
-    <button class="vb-chip vb-future" data-k="renew_week" onclick="toggleDateFilter('renew_week')">Numa semana <span class="vb-count" id="vb-renew_week">0</span></button>
-    <button class="vb-chip vb-future" data-k="renew_month" onclick="toggleDateFilter('renew_month')">Num mês <span class="vb-count" id="vb-renew_month">0</span></button>
-    <button class="vb-chip vb-future" data-k="renew_180" onclick="toggleDateFilter('renew_180')">Em 180 dias <span class="vb-count" id="vb-renew_180">0</span></button>
-  </div>
-  <div class="vb-row">
-    <span class="vb-label" title="Produtos já cancelados cujo limite de venda já passou">🚫 Vendas Canceladas:</span>
-    <button class="vb-chip vb-past" data-k="sale_week" onclick="toggleDateFilter('sale_week')">Semana passada <span class="vb-count" id="vb-sale_week">0</span></button>
-    <button class="vb-chip vb-past" data-k="sale_month" onclick="toggleDateFilter('sale_month')">Mês passado <span class="vb-count" id="vb-sale_month">0</span></button>
-    <button class="vb-chip vb-past" data-k="sale_year" onclick="toggleDateFilter('sale_year')">Este ano <span class="vb-count" id="vb-sale_year">0</span></button>
-  </div>
-  <div class="vb-row">
-    <span class="vb-label" title="Produtos já cancelados cujo limite de utilização já passou">⛔ Utilizações Canceladas:</span>
-    <button class="vb-chip vb-past" data-k="use_week" onclick="toggleDateFilter('use_week')">Semana passada <span class="vb-count" id="vb-use_week">0</span></button>
-    <button class="vb-chip vb-past" data-k="use_month" onclick="toggleDateFilter('use_month')">Mês passado <span class="vb-count" id="vb-use_month">0</span></button>
-    <button class="vb-chip vb-past" data-k="use_year" onclick="toggleDateFilter('use_year')">Este ano <span class="vb-count" id="vb-use_year">0</span></button>
-  </div>
+  <span class="vb-label" title="Só produtos Autorizados — a validade da autorização está a aproximar-se do fim">🔄 Autorizações a Cancelar:</span>
+  <button class="vb-chip vb-future" data-k="renew_week" onclick="toggleDateFilter('renew_week')">Numa semana <span class="vb-count" id="vb-renew_week">0</span></button>
+  <button class="vb-chip vb-future" data-k="renew_month" onclick="toggleDateFilter('renew_month')">Num mês <span class="vb-count" id="vb-renew_month">0</span></button>
+  <button class="vb-chip vb-future" data-k="renew_180" onclick="toggleDateFilter('renew_180')">Em 180 dias <span class="vb-count" id="vb-renew_180">0</span></button>
+
+  <span class="vb-sep"></span>
+  <span class="vb-label" title="Produtos já cancelados cujo limite de venda já passou">🚫 Vendas Canceladas:</span>
+  <button class="vb-chip vb-past" data-k="sale_week" onclick="toggleDateFilter('sale_week')">Semana passada <span class="vb-count" id="vb-sale_week">0</span></button>
+  <button class="vb-chip vb-past" data-k="sale_month" onclick="toggleDateFilter('sale_month')">Mês passado <span class="vb-count" id="vb-sale_month">0</span></button>
+  <button class="vb-chip vb-past" data-k="sale_year" onclick="toggleDateFilter('sale_year')">Este ano <span class="vb-count" id="vb-sale_year">0</span></button>
+
+  <span class="vb-sep"></span>
+  <span class="vb-label" title="Produtos já cancelados cujo limite de utilização já passou">⛔ Utilizações Canceladas:</span>
+  <button class="vb-chip vb-past" data-k="use_week" onclick="toggleDateFilter('use_week')">Semana passada <span class="vb-count" id="vb-use_week">0</span></button>
+  <button class="vb-chip vb-past" data-k="use_month" onclick="toggleDateFilter('use_month')">Mês passado <span class="vb-count" id="vb-use_month">0</span></button>
+  <button class="vb-chip vb-past" data-k="use_year" onclick="toggleDateFilter('use_year')">Este ano <span class="vb-count" id="vb-use_year">0</span></button>
 </div>
 
 <div id="table-wrap"></div>
