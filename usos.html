@@ -27,6 +27,11 @@ header{
 header h1{font-size:.95rem;font-weight:600;flex:1;letter-spacing:-.01em}
 #header-meta{font-size:.7rem;opacity:.6;font-family:ui-monospace,SFMono-Regular,'Cascadia Code','Roboto Mono',Consolas,monospace;white-space:nowrap}
 .btn-hdr{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:6px;padding:.35rem .8rem;font-size:.75rem;font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-weight:600;cursor:pointer;transition:background .15s;white-space:nowrap}
+.tools-menu-wrap{position:relative}
+.tools-menu{display:none;position:absolute;top:135%;right:0;background:#fff;border:1.5px solid var(--border);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.2);min-width:170px;z-index:400;overflow:hidden}
+.tools-menu.open{display:block}
+.tools-menu button{display:block;width:100%;text-align:left;padding:.65rem .95rem;background:none;border:none;font-size:.8rem;font-weight:600;color:var(--ink);cursor:pointer;font-family:inherit}
+.tools-menu button:hover{background:var(--cream)}
 .btn-hdr:hover{background:rgba(255,255,255,.25)}
 
 /* IMPORT SCREEN */
@@ -132,12 +137,13 @@ header h1{font-size:.95rem;font-weight:600;flex:1;letter-spacing:-.01em}
 .cb-list div:last-child{border-bottom:none}
 
 #validade-bar{
-  display:none;flex-wrap:wrap;align-items:center;gap:.5rem;
+  display:none;flex-direction:column;gap:.4rem;
   padding:.5rem 1.5rem;background:var(--cream);
   border-bottom:1px solid var(--border);
   position:sticky;left:0;
 }
 #validade-bar.active{display:flex}
+.vb-row{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}
 .vb-label{font-weight:700;color:var(--muted);font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
 .vb-chip{
   background:#fff;border:1.5px solid var(--border);border-radius:20px;
@@ -309,8 +315,14 @@ hr.dp-sep{border:none;border-top:1px solid var(--border);margin:.75rem 0}
     </p>
   </div>
   <span id="header-meta">sem dados</span>
-  <button class="btn-hdr" id="share-btn" onclick="shareCurrentView()" title="Partilhar esta pesquisa">🔗 Partilhar</button>
-  <button class="btn-hdr" onclick="openUpdateUI()">⬆ Actualizar</button>
+  <div class="tools-menu-wrap">
+    <button class="btn-hdr" onclick="toggleToolsMenu(event)">⚙ Ferramentas ▾</button>
+    <div class="tools-menu" id="tools-menu">
+      <button onclick="closeToolsMenu();openUpdateUI()">⬆ Actualizar</button>
+      <button onclick="closeToolsMenu();exportToExcel()">📤 Exportar</button>
+      <button onclick="closeToolsMenu();shareCurrentView()">🔗 Partilhar</button>
+    </div>
+  </div>
 </header>
 
 <!-- IMPORT SCREEN -->
@@ -382,6 +394,7 @@ hr.dp-sep{border:none;border-top:1px solid var(--border);margin:.75rem 0}
     <select id="f-estado">
       <option value="">Todos</option>
       <option value="AUT">✅ Autorizada</option>
+      <option value="CANC">🚫 Todas as Canceladas</option>
       <option value="CVP">🟡 Cancelada — Venda Permitida</option>
       <option value="CVIP">🟠 Cancelada — Venda Interdita / Util. Permitida</option>
       <option value="CVUI">⚫ Cancelada — Venda e Util. Interditas</option>
@@ -397,7 +410,6 @@ hr.dp-sep{border:none;border-top:1px solid var(--border);margin:.75rem 0}
     </select>
   </div>
   <button class="btn btn-ghost" onclick="clearFilters()">✕ Limpar</button>
-  <button class="btn btn-ghost" onclick="exportToExcel()" title="Exportar os registos filtrados para Excel">📤 Exportar</button>
   <label style="display:flex;align-items:center;gap:.35rem;font-size:.8rem;font-weight:600;color:var(--ink);cursor:pointer;white-space:nowrap">
     <input type="checkbox" id="f-fav-only" onchange="applyFilters()" style="width:16px;height:16px;cursor:pointer">
     ⭐ Só favoritos
@@ -425,12 +437,20 @@ hr.dp-sep{border:none;border-top:1px solid var(--border);margin:.75rem 0}
 <div id="changes-banner"></div>
 
 <div id="validade-bar">
-  <span class="vb-label">⏰ Validades:</span>
-  <button class="vb-chip vb-past" data-k="exp_week" onclick="toggleDateFilter('exp_week')">🔴 Expiraram esta semana <span class="vb-count" id="vb-exp_week">0</span></button>
-  <button class="vb-chip vb-past" data-k="exp_month" onclick="toggleDateFilter('exp_month')">🟠 Expiraram este mês <span class="vb-count" id="vb-exp_month">0</span></button>
-  <button class="vb-chip vb-future" data-k="due_week" onclick="toggleDateFilter('due_week')">🟡 Expiram numa semana <span class="vb-count" id="vb-due_week">0</span></button>
-  <button class="vb-chip vb-future" data-k="due_month" onclick="toggleDateFilter('due_month')">🟡 Expiram num mês <span class="vb-count" id="vb-due_month">0</span></button>
-  <button class="vb-chip vb-future" data-k="due_180" onclick="toggleDateFilter('due_180')">⚪ Expiram em 180 dias <span class="vb-count" id="vb-due_180">0</span></button>
+  <div class="vb-row">
+    <span class="vb-label" title="Só produtos Autorizados — quando a autorização precisa de ser renovada">🔄 Autorizações a renovar:</span>
+    <button class="vb-chip vb-future" data-k="renew_week" onclick="toggleDateFilter('renew_week')">Numa semana <span class="vb-count" id="vb-renew_week">0</span></button>
+    <button class="vb-chip vb-future" data-k="renew_month" onclick="toggleDateFilter('renew_month')">Num mês <span class="vb-count" id="vb-renew_month">0</span></button>
+    <button class="vb-chip vb-future" data-k="renew_180" onclick="toggleDateFilter('renew_180')">Em 180 dias <span class="vb-count" id="vb-renew_180">0</span></button>
+  </div>
+  <div class="vb-row">
+    <span class="vb-label" title="Canceladas — usa o limite de venda ou de utilização, consoante o tipo">⏳ Prazos de canceladas a terminar:</span>
+    <button class="vb-chip vb-past" data-k="exp_week" onclick="toggleDateFilter('exp_week')">Terminaram esta semana <span class="vb-count" id="vb-exp_week">0</span></button>
+    <button class="vb-chip vb-past" data-k="exp_month" onclick="toggleDateFilter('exp_month')">Terminaram este mês <span class="vb-count" id="vb-exp_month">0</span></button>
+    <button class="vb-chip vb-future" data-k="due_week" onclick="toggleDateFilter('due_week')">Terminam numa semana <span class="vb-count" id="vb-due_week">0</span></button>
+    <button class="vb-chip vb-future" data-k="due_month" onclick="toggleDateFilter('due_month')">Terminam num mês <span class="vb-count" id="vb-due_month">0</span></button>
+    <button class="vb-chip vb-future" data-k="due_180" onclick="toggleDateFilter('due_180')">Terminam em 180 dias <span class="vb-count" id="vb-due_180">0</span></button>
+  </div>
 </div>
 
 <div id="table-wrap"></div>
@@ -509,9 +529,11 @@ async function loadFavorites(){
   FAVORITES=new Set((await dbGet('favoritos_usos'))||[]);
 }
 /* ══════════════ PAINEL DE VALIDADES ══════════════
-   Categorias calculadas inteiramente no browser, a partir do campo
-   'validade' já existente em cada registo — não depende de nenhum
-   ficheiro externo nem do workflow de atualização semanal. */
+   Cada estado tem uma data relevante diferente:
+   - Autorizada            → 'validade'      (quando a autorização precisa de ser renovada)
+   - Cancelada Venda Perm. → 'limite_comerc' (até quando se pode vender)
+   - Cancelada Venda Int.  → 'limite_util'   (até quando se pode usar, mesmo sem poder vender)
+   - Cancelada Venda/Util Int. → não há nada a monitorizar (já está tudo interdito) */
 let DATE_FILTER=null;
 
 function daysUntil(dateStr){
@@ -522,8 +544,31 @@ function daysUntil(dateStr){
   return Math.round((d-today)/86400000);
 }
 
+/* Devolve a data relevante para este registo, consoante o seu estado —
+   ou null se este estado não tiver nenhuma data que faça sentido monitorizar. */
+function relevantExpiryDate(r){
+  switch(r.estado){
+    case 'Autorizada': return null; // tratado à parte em renewalDiff
+    case 'Cancelada — Venda Permitida': return r.limite_comerc;
+    case 'Cancelada — Venda Interdita / Util. Permitida': return r.limite_util;
+    default: return null; // 'Venda e Util. Interditas' — nada a monitorizar
+  }
+}
+
 function matchesDateFilter(r,key){
-  const diff=daysUntil(r.validade);
+  // Autorizações a renovar — só produtos Autorizados, campo 'validade'
+  if(key.startsWith('renew_')){
+    if(r.estado!=='Autorizada') return false;
+    const diff=daysUntil(r.validade);
+    if(diff===null || diff<0) return false;
+    if(key==='renew_week')  return diff<=7;
+    if(key==='renew_month') return diff<=30;
+    if(key==='renew_180')   return diff<=180;
+    return false;
+  }
+  // Prazos de canceladas a terminar — campo relevante consoante o estado
+  const dateStr=relevantExpiryDate(r);
+  const diff=daysUntil(dateStr);
   if(diff===null) return false;
   switch(key){
     case 'exp_week':  return diff<0 && diff>=-7;
@@ -536,7 +581,7 @@ function matchesDateFilter(r,key){
 }
 
 function updateValidadeBar(){
-  const keys=['exp_week','exp_month','due_week','due_month','due_180'];
+  const keys=['renew_week','renew_month','renew_180','exp_week','exp_month','due_week','due_month','due_180'];
   const counts=Object.fromEntries(keys.map(k=>[k,0]));
   ALL.forEach(r=>{ keys.forEach(k=>{ if(matchesDateFilter(r,k)) counts[k]++; }); });
   keys.forEach(k=>{ const el=document.getElementById('vb-'+k); if(el) el.textContent=counts[k]; });
@@ -756,7 +801,9 @@ function xlsxToRecords(ws){
 /* ══════════════ REBUILD ALL ══════════════ */
 function rebuildALL(){
   const estadoFilter = document.getElementById('f-estado')?.value || '';
-  if(estadoFilter){
+  if(estadoFilter==='CANC'){
+    ALL = [...(DATASETS.CVP||[]),...(DATASETS.CVIP||[]),...(DATASETS.CVUI||[])];
+  } else if(estadoFilter){
     ALL = DATASETS[estadoFilter] || [];
   } else {
     ALL = Object.values(DATASETS).flat();
@@ -1150,8 +1197,17 @@ function closeAllComboboxes(){
   document.querySelectorAll('.cb-wrap.open').forEach(w=>w.classList.remove('open'));
 }
 
+function toggleToolsMenu(e){
+  e.stopPropagation();
+  document.getElementById('tools-menu').classList.toggle('open');
+}
+function closeToolsMenu(){
+  document.getElementById('tools-menu').classList.remove('open');
+}
+
 document.addEventListener('mousedown', e => {
   if(!e.target.closest('.cb-wrap')) closeAllComboboxes();
+  if(!e.target.closest('.tools-menu-wrap')) closeToolsMenu();
 });
 
 /* ══════════════ FILTER + SORT ══════════════ */
@@ -1175,7 +1231,9 @@ function applyFilters(){
     else if(!inim.exact && inim.text && !r.inimigo?.toLowerCase().includes(inim.text.toLowerCase())) return false;
     if(nomc.exact && r.nome_cient!==nomc.exact) return false;
     else if(!nomc.exact && nomc.text && !r.nome_cient?.toLowerCase().includes(nomc.text.toLowerCase())) return false;
-    if(estado){
+    if(estado==='CANC'){
+      if(r.estado==='Autorizada') return false;
+    } else if(estado){
       const est=ESTADO_BY_KEY[estado];
       if(est && r.estado!==est.label) return false;
     }
@@ -1426,7 +1484,9 @@ document.getElementById('f-pp').addEventListener('change',()=>{PAGE=1;applyFilte
 // Estado — carrega dataset se ainda não estiver em memória
 document.getElementById('f-estado').addEventListener('change', async ()=>{
   const key = document.getElementById('f-estado').value;
-  if(key && !DATASETS[key]){
+  if(key==='CANC'){
+    for(const k of ['CVP','CVIP','CVUI']){ if(!DATASETS[k]) await loadDataset(k); }
+  } else if(key && !DATASETS[key]){
     await loadDataset(key);
   }
   // Se "Todas", garante que todos os datasets estão carregados
