@@ -438,18 +438,22 @@ hr.dp-sep{border:none;border-top:1px solid var(--border);margin:.75rem 0}
 
 <div id="validade-bar">
   <div class="vb-row">
-    <span class="vb-label" title="Só produtos Autorizados — quando a autorização precisa de ser renovada">🔄 Autorizações a renovar:</span>
+    <span class="vb-label" title="Só produtos Autorizados — a validade da autorização está a aproximar-se do fim">🔄 Autorizações a Cancelar:</span>
     <button class="vb-chip vb-future" data-k="renew_week" onclick="toggleDateFilter('renew_week')">Numa semana <span class="vb-count" id="vb-renew_week">0</span></button>
     <button class="vb-chip vb-future" data-k="renew_month" onclick="toggleDateFilter('renew_month')">Num mês <span class="vb-count" id="vb-renew_month">0</span></button>
     <button class="vb-chip vb-future" data-k="renew_180" onclick="toggleDateFilter('renew_180')">Em 180 dias <span class="vb-count" id="vb-renew_180">0</span></button>
   </div>
   <div class="vb-row">
-    <span class="vb-label" title="Canceladas — usa o limite de venda ou de utilização, consoante o tipo">⏳ Prazos de canceladas a terminar:</span>
-    <button class="vb-chip vb-past" data-k="exp_week" onclick="toggleDateFilter('exp_week')">Terminaram esta semana <span class="vb-count" id="vb-exp_week">0</span></button>
-    <button class="vb-chip vb-past" data-k="exp_month" onclick="toggleDateFilter('exp_month')">Terminaram este mês <span class="vb-count" id="vb-exp_month">0</span></button>
-    <button class="vb-chip vb-future" data-k="due_week" onclick="toggleDateFilter('due_week')">Terminam numa semana <span class="vb-count" id="vb-due_week">0</span></button>
-    <button class="vb-chip vb-future" data-k="due_month" onclick="toggleDateFilter('due_month')">Terminam num mês <span class="vb-count" id="vb-due_month">0</span></button>
-    <button class="vb-chip vb-future" data-k="due_180" onclick="toggleDateFilter('due_180')">Terminam em 180 dias <span class="vb-count" id="vb-due_180">0</span></button>
+    <span class="vb-label" title="Produtos já cancelados cujo limite de venda já passou">🚫 Vendas Canceladas:</span>
+    <button class="vb-chip vb-past" data-k="sale_week" onclick="toggleDateFilter('sale_week')">Semana passada <span class="vb-count" id="vb-sale_week">0</span></button>
+    <button class="vb-chip vb-past" data-k="sale_month" onclick="toggleDateFilter('sale_month')">Mês passado <span class="vb-count" id="vb-sale_month">0</span></button>
+    <button class="vb-chip vb-past" data-k="sale_year" onclick="toggleDateFilter('sale_year')">Este ano <span class="vb-count" id="vb-sale_year">0</span></button>
+  </div>
+  <div class="vb-row">
+    <span class="vb-label" title="Produtos já cancelados cujo limite de utilização já passou">⛔ Utilizações Canceladas:</span>
+    <button class="vb-chip vb-past" data-k="use_week" onclick="toggleDateFilter('use_week')">Semana passada <span class="vb-count" id="vb-use_week">0</span></button>
+    <button class="vb-chip vb-past" data-k="use_month" onclick="toggleDateFilter('use_month')">Mês passado <span class="vb-count" id="vb-use_month">0</span></button>
+    <button class="vb-chip vb-past" data-k="use_year" onclick="toggleDateFilter('use_year')">Este ano <span class="vb-count" id="vb-use_year">0</span></button>
   </div>
 </div>
 
@@ -544,19 +548,17 @@ function daysUntil(dateStr){
   return Math.round((d-today)/86400000);
 }
 
-/* Devolve a data relevante para este registo, consoante o seu estado —
-   ou null se este estado não tiver nenhuma data que faça sentido monitorizar. */
-function relevantExpiryDate(r){
-  switch(r.estado){
-    case 'Autorizada': return null; // tratado à parte em renewalDiff
-    case 'Cancelada — Venda Permitida': return r.limite_comerc;
-    case 'Cancelada — Venda Interdita / Util. Permitida': return r.limite_util;
-    default: return null; // 'Venda e Util. Interditas' — nada a monitorizar
-  }
+/* "Este ano" = já passou, mas ainda dentro do ano corrente (1 de Janeiro até hoje). */
+function isPastThisYear(dateStr){
+  if(!dateStr) return false;
+  const d=new Date(dateStr+'T00:00:00');
+  if(isNaN(d)) return false;
+  const today=new Date(); today.setHours(0,0,0,0);
+  return d<=today && d.getFullYear()===today.getFullYear();
 }
 
 function matchesDateFilter(r,key){
-  // Autorizações a renovar — só produtos Autorizados, campo 'validade'
+  // Autorizações a Cancelar — só produtos ainda Autorizados, campo 'validade'
   if(key.startsWith('renew_')){
     if(r.estado!=='Autorizada') return false;
     const diff=daysUntil(r.validade);
@@ -566,22 +568,31 @@ function matchesDateFilter(r,key){
     if(key==='renew_180')   return diff<=180;
     return false;
   }
-  // Prazos de canceladas a terminar — campo relevante consoante o estado
-  const dateStr=relevantExpiryDate(r);
-  const diff=daysUntil(dateStr);
-  if(diff===null) return false;
-  switch(key){
-    case 'exp_week':  return diff<0 && diff>=-7;
-    case 'exp_month': return diff<0 && diff>=-30;
-    case 'due_week':  return diff>=0 && diff<=7;
-    case 'due_month': return diff>=0 && diff<=30;
-    case 'due_180':   return diff>=0 && diff<=180;
+  // Vendas Canceladas — qualquer registo já cancelado, campo 'limite_comerc' já passado
+  if(key.startsWith('sale_')){
+    if(r.estado==='Autorizada') return false;
+    const diff=daysUntil(r.limite_comerc);
+    if(diff===null || diff>=0) return false;
+    if(key==='sale_week')  return diff>=-7;
+    if(key==='sale_month') return diff>=-30;
+    if(key==='sale_year')  return isPastThisYear(r.limite_comerc);
+    return false;
+  }
+  // Utilizações Canceladas — qualquer registo já cancelado, campo 'limite_util' já passado
+  if(key.startsWith('use_')){
+    if(r.estado==='Autorizada') return false;
+    const diff=daysUntil(r.limite_util);
+    if(diff===null || diff>=0) return false;
+    if(key==='use_week')  return diff>=-7;
+    if(key==='use_month') return diff>=-30;
+    if(key==='use_year')  return isPastThisYear(r.limite_util);
+    return false;
   }
   return false;
 }
 
 function updateValidadeBar(){
-  const keys=['renew_week','renew_month','renew_180','exp_week','exp_month','due_week','due_month','due_180'];
+  const keys=['renew_week','renew_month','renew_180','sale_week','sale_month','sale_year','use_week','use_month','use_year'];
   const counts=Object.fromEntries(keys.map(k=>[k,0]));
   ALL.forEach(r=>{ keys.forEach(k=>{ if(matchesDateFilter(r,k)) counts[k]++; }); });
   keys.forEach(k=>{ const el=document.getElementById('vb-'+k); if(el) el.textContent=counts[k]; });
@@ -1295,11 +1306,16 @@ function render(){
   }
 
   // Header
+  const dateColInfo = DATE_FILTER && DATE_FILTER.startsWith('sale_') ? {label:'Limite Venda',key:'limite_comerc'}
+    : DATE_FILTER && DATE_FILTER.startsWith('use_') ? {label:'Limite Utiliz.',key:'limite_util'}
+    : {label:'Validade',key:'validade'};
+
   const thdr=COLS.map(c=>{
     const act=SORT_COL===c.key;
     const ic=act?(SORT_ASC?'▲':'▼'):'⇅';
+    const label = c.key==='validade' ? dateColInfo.label : c.label;
     return `<th onclick="setSort('${c.key}')" class="${act?'sorted':''}"
-      style="min-width:${c.w}">${esc(c.label)}<span class="sort-ic">${ic}</span></th>`;
+      style="min-width:${c.w}">${esc(label)}<span class="sort-ic">${ic}</span></th>`;
   }).join('')+`<th class="col-detail" style="width:92px;text-align:center" title="Ver ficha completa do registo">Detalhe</th>`;
 
   // Body
@@ -1315,7 +1331,7 @@ function render(){
       <td>${funcTag(r.funcao)}</td>
       <td style="font-size:.74rem;color:var(--muted)">${esc(r.substancia||'—')}</td>
       <td><span class="mono">${esc(r.numero||'—')}</span></td>
-      <td>${validTag(r.validade)}</td>
+      <td>${validTag(r[dateColInfo.key])}</td>
       <td style="font-size:.72rem">${esc(r.dose||'—')}</td>
       <td class="col-detail" style="text-align:center">
         <div style="display:flex;gap:4px;justify-content:center">
