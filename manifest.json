@@ -1,0 +1,15 @@
+{
+  "name": "AgroFito — Produtos Fitofarmacêuticos",
+  "short_name": "AgroFito",
+  "description": "Consulta de produtos fitofarmacêuticos autorizados e cancelados em Portugal, com dados oficiais DGAV/SIFITO.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f0e8",
+  "theme_color": "#0f3d22",
+  "lang": "pt-PT",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

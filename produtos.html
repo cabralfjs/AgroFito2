@@ -4,7 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AgroFito — Produtos Fitofarmacêuticos</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 52 52'%3E%3Ccircle cx='26' cy='26' r='26' fill='%230f3d22'/%3E%3Cpath d='M26 44 C26 44 12 34 12 21 C12 13 18 8 26 8 C34 8 40 13 40 21 C40 34 26 44 26 44Z' fill='%237cb83a'/%3E%3C/svg%3E">
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#0f3d22">
+<script src="./xlsx.min.js"></script>
 <style>
 :root{--g1:#0f3d22;--g2:#1a5c35;--g3:#2d7a4f;--lime:#7cb83a;--lime2:#c5e89a;--cream:#f4f0e8;--paper:#fdfaf4;--ink:#18180f;--muted:#6b6b5a;--border:#d6d0c4;--border2:#c4bfb2;--accent:#d4860e;--red:#b83232;--blue:#1a6699;--tag-bg:#e6f2da;--tag-fg:#1a5c35;--sh:0 2px 16px rgba(0,0,0,.09);--sticky-top:116px}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -199,6 +202,7 @@ hr.dp-sep{border:none;border-top:1px solid var(--border);margin:.75rem 0}
     </p>
   </div>
   <span id="header-meta">sem dados</span>
+  <button id="install-btn" onclick="installApp()" style="display:none" class="btn-hdr">📲 Instalar</button>
   <div class="tools-menu-wrap">
     <button class="btn-hdr" onclick="toggleToolsMenu(event)">⚙ Ferramentas ▾</button>
     <div class="tools-menu" id="tools-menu">
@@ -953,6 +957,26 @@ document.getElementById('f-estado').addEventListener('change',async()=>{
   if(key&&!DATASETS[key])await loadDataset(key);
   if(!key){for(const est of ESTADOS){if(!DATASETS[est.key])await loadDataset(est.key);}}
   rebuildALL();buildSelects();updateHeaderMeta();PAGE=1;applyFilters();
+});
+
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('./service-worker.js').catch(()=>{});
+}
+let deferredInstallPrompt=null;
+window.addEventListener('beforeinstallprompt',(e)=>{
+  e.preventDefault();
+  deferredInstallPrompt=e;
+  document.getElementById('install-btn').style.display='inline-block';
+});
+async function installApp(){
+  if(!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt=null;
+  document.getElementById('install-btn').style.display='none';
+}
+window.addEventListener('appinstalled',()=>{
+  document.getElementById('install-btn').style.display='none';
 });
 
 init();

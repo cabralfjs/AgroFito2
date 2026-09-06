@@ -4,7 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SIFITO – Finalidades Autorizadas</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 52 52'%3E%3Ccircle cx='26' cy='26' r='26' fill='%230f3d22'/%3E%3Cpath d='M26 44 C26 44 12 34 12 21 C12 13 18 8 26 8 C34 8 40 13 40 21 C40 34 26 44 26 44Z' fill='%237cb83a'/%3E%3C/svg%3E">
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#0f3d22">
+<script src="./xlsx.min.js"></script>
 <style>
 :root {
   --g1:#0f3d22;--g2:#1a5c35;--g3:#2d7a4f;--lime:#7cb83a;--lime2:#a8d96c;
@@ -185,6 +188,8 @@ thead th:hover{background:var(--g2)}
 thead th.sorted{background:var(--g3)}
 .sort-ic{margin-left:.3rem;opacity:.45;font-size:.75em}
 thead th.sorted .sort-ic{opacity:1;color:var(--lime2)}
+.th-help{cursor:help;opacity:.7;font-size:.95em}
+.th-help:hover{opacity:1}
 
 tbody tr{transition:background .1s}
 tbody tr:nth-child(even){background:#fafef7}
@@ -313,6 +318,7 @@ hr.dp-sep{border:none;border-top:1px solid var(--border);margin:.75rem 0}
     </p>
   </div>
   <span id="header-meta">sem dados</span>
+  <button id="install-btn" onclick="installApp()" style="display:none" class="btn-hdr">📲 Instalar</button>
   <div class="tools-menu-wrap">
     <button class="btn-hdr" onclick="toggleToolsMenu(event)">⚙ Ferramentas ▾</button>
     <div class="tools-menu" id="tools-menu">
@@ -1287,16 +1293,18 @@ function render(){
   }
 
   // Header
-  const dateColInfo = DATE_FILTER && DATE_FILTER.startsWith('sale_') ? {label:'Limite Venda',key:'limite_comerc'}
-    : DATE_FILTER && DATE_FILTER.startsWith('use_') ? {label:'Limite Utiliz.',key:'limite_util'}
-    : {label:'Validade',key:'validade'};
+  const dateColInfo = DATE_FILTER && DATE_FILTER.startsWith('sale_') ? {label:'Limite Venda',key:'limite_comerc',tip:'Até quando ainda se pode vender este produto, mesmo já cancelado.'}
+    : DATE_FILTER && DATE_FILTER.startsWith('use_') ? {label:'Limite Utiliz.',key:'limite_util',tip:'Até quando ainda se pode usar este produto, mesmo não podendo comprar mais.'}
+    : {label:'Validade',key:'validade',tip:'Data até quando esta autorização (cultura + praga + produto) se mantém válida.'};
 
   const thdr=COLS.map(c=>{
     const act=SORT_COL===c.key;
     const ic=act?(SORT_ASC?'▲':'▼'):'⇅';
     const label = c.key==='validade' ? dateColInfo.label : c.label;
+    const help = c.key==='validade'
+      ? ` <span class="th-help" title="${esc(dateColInfo.tip)}" onclick="event.stopPropagation()">ⓘ</span>` : '';
     return `<th onclick="setSort('${c.key}')" class="${act?'sorted':''}"
-      style="min-width:${c.w}">${esc(label)}<span class="sort-ic">${ic}</span></th>`;
+      style="min-width:${c.w}">${esc(label)}${help}<span class="sort-ic">${ic}</span></th>`;
   }).join('')+`<th class="col-detail" style="width:92px;text-align:center" title="Ver ficha completa do registo">Detalhe</th>`;
 
   // Body
@@ -1512,6 +1520,29 @@ function clearFilters(){
   updateCascadeSelects();
   applyFilters();
 }
+
+/* PWA: regista o service worker e mostra o botão "Instalar" quando o
+   browser oferecer essa opção (Chrome/Edge no Android/PC; no iOS não há
+   este evento — lá é via "Adicionar ao ecrã principal" no Safari). */
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('./service-worker.js').catch(()=>{});
+}
+let deferredInstallPrompt=null;
+window.addEventListener('beforeinstallprompt',(e)=>{
+  e.preventDefault();
+  deferredInstallPrompt=e;
+  document.getElementById('install-btn').style.display='inline-block';
+});
+async function installApp(){
+  if(!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt=null;
+  document.getElementById('install-btn').style.display='none';
+}
+window.addEventListener('appinstalled',()=>{
+  document.getElementById('install-btn').style.display='none';
+});
 
 init();
 </script>
