@@ -318,7 +318,6 @@ hr.dp-sep{border:none;border-top:1px solid var(--border);margin:.75rem 0}
     </p>
   </div>
   <span id="header-meta">sem dados</span>
-  <button id="install-btn" onclick="installApp()" style="display:none" class="btn-hdr">📲 Instalar</button>
   <div class="tools-menu-wrap">
     <button class="btn-hdr" onclick="toggleToolsMenu(event)">⚙ Ferramentas ▾</button>
     <div class="tools-menu" id="tools-menu">
@@ -1521,28 +1520,11 @@ function clearFilters(){
   applyFilters();
 }
 
-/* PWA: regista o service worker e mostra o botão "Instalar" quando o
-   browser oferecer essa opção (Chrome/Edge no Android/PC; no iOS não há
-   este evento — lá é via "Adicionar ao ecrã principal" no Safari). */
+/* PWA: regista o service worker para as páginas ficarem em cache
+   (o botão de instalar está centralizado na home, index.html). */
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('./service-worker.js').catch(()=>{});
 }
-let deferredInstallPrompt=null;
-window.addEventListener('beforeinstallprompt',(e)=>{
-  e.preventDefault();
-  deferredInstallPrompt=e;
-  document.getElementById('install-btn').style.display='inline-block';
-});
-async function installApp(){
-  if(!deferredInstallPrompt) return;
-  deferredInstallPrompt.prompt();
-  await deferredInstallPrompt.userChoice;
-  deferredInstallPrompt=null;
-  document.getElementById('install-btn').style.display='none';
-}
-window.addEventListener('appinstalled',()=>{
-  document.getElementById('install-btn').style.display='none';
-});
 
 init();
 </script>

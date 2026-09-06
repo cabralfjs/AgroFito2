@@ -77,6 +77,11 @@ header{background:linear-gradient(135deg,var(--g1) 0%,var(--g2) 60%,var(--g3) 10
 
 .notice-bar{max-width:860px;width:100%;background:#fff8e1;border:1.5px solid #f5d060;border-radius:8px;padding:.6rem 1rem;font-size:.76rem;color:#7a5200;line-height:1.5;display:flex;gap:.6rem;align-items:flex-start}
 .notice-bar .icon{font-size:1rem;flex-shrink:0;margin-top:1px}
+.install-card{display:none;max-width:280px;width:100%;background:var(--paper);border:1.5px solid var(--lime);border-radius:8px;padding:.6rem .8rem;font-size:.78rem;color:var(--ink);align-items:center;gap:.5rem}
+.install-card.show{display:flex}
+.install-icon{font-size:1.05rem;flex-shrink:0}
+.install-text{flex:1;font-weight:600}
+.install-btn{background:var(--g2);color:#fff;border:none;border-radius:6px;padding:.4rem .8rem;font-size:.76rem;font-weight:600;cursor:pointer;white-space:nowrap;font-family:inherit}
 .attribution{background:var(--g1);color:rgba(255,255,255,.75);padding:.75rem 2rem;text-align:center;font-size:.72rem;line-height:1.6}
 .attribution a{color:var(--lime2);text-decoration:underline}
 .attribution strong{color:#fff}
@@ -99,7 +104,6 @@ header{background:linear-gradient(135deg,var(--g1) 0%,var(--g2) 60%,var(--g3) 10
     <h1><span>Agro</span>Fito</h1>
     <p>Ferramenta de Consulta de Produtos Fitofarmacêuticos</p>
   </div>
-  <button id="install-btn" onclick="installApp()" style="display:none;margin-left:auto;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:6px;padding:.5rem 1rem;font-size:.8rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">📲 Instalar App</button>
 </header>
 
 <div class="hero">
@@ -140,6 +144,12 @@ header{background:linear-gradient(135deg,var(--g1) 0%,var(--g2) 60%,var(--g3) 10
       Consulte sempre o site oficial em
       <a href="https://sifito.dgav.pt/" target="_blank" rel="noopener noreferrer" style="color:#7a5200;font-weight:600">sifito.dgav.pt</a>.
     </span>
+  </div>
+
+  <div class="install-card" id="install-card">
+    <span class="install-icon">📲</span>
+    <span class="install-text">Instalar no telemóvel/PC</span>
+    <button class="install-btn" onclick="installApp()">Instalar</button>
   </div>
 </div>
 
@@ -191,17 +201,17 @@ let deferredInstallPrompt=null;
 window.addEventListener('beforeinstallprompt',(e)=>{
   e.preventDefault();
   deferredInstallPrompt=e;
-  document.getElementById('install-btn').style.display='inline-block';
+  document.getElementById('install-card').classList.add('show');
 });
 async function installApp(){
   if(!deferredInstallPrompt) return;
   deferredInstallPrompt.prompt();
   await deferredInstallPrompt.userChoice;
   deferredInstallPrompt=null;
-  document.getElementById('install-btn').style.display='none';
+  document.getElementById('install-card').classList.remove('show');
 }
 window.addEventListener('appinstalled',()=>{
-  document.getElementById('install-btn').style.display='none';
+  document.getElementById('install-card').classList.remove('show');
 });
 </script>
 </body>
