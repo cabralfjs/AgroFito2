@@ -56,7 +56,7 @@ header h1{font-size:.95rem;font-weight:600;flex:1;letter-spacing:-.01em}
 /* TOOLBAR */
 #toolbar{background:var(--paper);border-bottom:1px solid var(--border);padding:.9rem 1.5rem;display:none;flex-wrap:wrap;gap:.6rem;align-items:flex-end;position:sticky;top:58px;left:0;z-index:200}
 #toolbar.active{display:flex}
-.search-wrap{flex:1;min-width:220px;position:relative}
+.search-wrap{flex:0 1 280px;min-width:220px;max-width:320px;position:relative}
 .search-wrap input{width:100%;padding:.55rem .8rem .55rem 2.3rem;border:1.5px solid var(--border);border-radius:8px;font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:.83rem;background:#fff;transition:border-color .2s;color:var(--ink)}
 .search-wrap input:focus{outline:none;border-color:var(--g3);box-shadow:0 0 0 3px rgba(45,122,79,.1)}
 .search-wrap::before{content:'⌕';position:absolute;left:.7rem;top:50%;transform:translateY(-50%);font-size:1.1rem;color:var(--muted);pointer-events:none;line-height:1}
