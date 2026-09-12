@@ -344,7 +344,8 @@ const COLS=[
 ];
 
 /* ══ INDEXEDDB ══ */
-function openDB(){return new Promise((res,rej)=>{const req=indexedDB.open(DB_NAME,DB_VER);req.onupgradeneeded=e=>{const db=e.target.result;if(!db.objectStoreNames.contains(STORE))db.createObjectStore(STORE);};req.onsuccess=e=>res(e.target.result);req.onerror=e=>rej(e.target.error);})}
+let _dbPromise=null;
+function openDB(){if(_dbPromise)return _dbPromise;_dbPromise=new Promise((res,rej)=>{const req=indexedDB.open(DB_NAME,DB_VER);req.onupgradeneeded=e=>{const db=e.target.result;if(!db.objectStoreNames.contains(STORE))db.createObjectStore(STORE);};req.onsuccess=e=>res(e.target.result);req.onerror=e=>{_dbPromise=null;rej(e.target.error);};});return _dbPromise;}
 async function dbGet(key){const db=await openDB();return new Promise((res,rej)=>{const req=db.transaction(STORE,'readonly').objectStore(STORE).get(key);req.onsuccess=e=>res(e.target.result);req.onerror=e=>rej(e.target.error);})}
 async function dbSet(key,val){const db=await openDB();return new Promise((res,rej)=>{const req=db.transaction(STORE,'readwrite').objectStore(STORE).put(val,key);req.onsuccess=()=>res();req.onerror=e=>rej(e.target.error);})}
 
@@ -365,29 +366,31 @@ async function init(){
   await loadFavorites();
   showLoading('A verificar dados em cache…');
   try{
+    const results=await Promise.all(
+      ESTADOS.map(est=>dbGet('data_'+est.key).then(c=>({key:est.key,c})).catch(()=>({key:est.key,c:null})))
+    );
     let found=false;
-    for(const est of ESTADOS){
-      const c=await dbGet('data_'+est.key);
-      if(c&&c.length){DATASETS[est.key]=c;found=true;}
+    for(const {key,c} of results){
+      if(c&&c.length){DATASETS[key]=c;found=true;}
     }
     if(found){ hideLoading(); showApp(); return; }
   }catch(e){ console.warn(e); }
 
   // Sem cache — tenta carregar os JSON do servidor automaticamente (Netlify)
   showLoading('A carregar dados do servidor…');
-  let loaded=0;
-  for(const est of ESTADOS){
+  const fetched=await Promise.all(ESTADOS.map(async est=>{
     try{
       const r=await fetch('./'+est.file,{cache:'no-cache'});
-      if(!r.ok) continue;
+      if(!r.ok) return null;
       const json=await r.json();
       const records=Array.isArray(json)?json:(json.records||json);
       records.forEach(rec=>{if(!rec.estado)rec.estado=est.label;});
       DATASETS[est.key]=records;
-      await dbSet('data_'+est.key,records);
-      loaded++;
-    }catch(e){ /* ficheiro não disponível (local) — ignora */ }
-  }
+      dbSet('data_'+est.key,records).catch(()=>{});
+      return est.key;
+    }catch(e){ return null; /* ficheiro não disponível (local) — ignora */ }
+  }));
+  const loaded=fetched.filter(Boolean).length;
   if(loaded>0){ hideLoading(); showApp(); return; }
 
   // Nada funcionou — mostra ecrã de importação manual

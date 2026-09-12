@@ -395,7 +395,7 @@ hr.dp-sep{border:none;border-top:1px solid var(--border);margin:.75rem 0}
   <div class="fg">
     <label>Estado</label>
     <select id="f-estado">
-      <option value="">Todos</option>
+      <option value="" selected>Todos</option>
       <option value="AUT">✅ Autorizada</option>
       <option value="CANC">🚫 Todas as Canceladas</option>
       <option value="CVP">🟡 Cancelada — Venda Permitida</option>
@@ -493,16 +493,19 @@ const COLS=[
 ];
 
 /* ══════════════ INDEXEDDB ══════════════ */
+let _dbPromise=null;
 function openDB(){
-  return new Promise((res,rej)=>{
+  if(_dbPromise) return _dbPromise;
+  _dbPromise=new Promise((res,rej)=>{
     const req=indexedDB.open(DB_NAME,DB_VER);
     req.onupgradeneeded=e=>{
       const db=e.target.result;
       if(!db.objectStoreNames.contains(STORE)) db.createObjectStore(STORE);
     };
     req.onsuccess=e=>res(e.target.result);
-    req.onerror=e=>rej(e.target.error);
+    req.onerror=e=>{ _dbPromise=null; rej(e.target.error); };
   });
+  return _dbPromise;
 }
 async function dbGet(key){
   const db=await openDB();
@@ -610,30 +613,29 @@ async function init(){
   await loadFavorites();
   showLoading('A verificar dados em cache…');
   try{
+    const results=await Promise.all(
+      ESTADOS.map(est=>dbGet('data_'+est.key).then(c=>({key:est.key,c})).catch(()=>({key:est.key,c:null})))
+    );
     let found=false;
-    for(const est of ESTADOS){
-      const c=await dbGet('data_'+est.key);
-      if(c&&c.length){DATASETS[est.key]=c;found=true;}
-    }
+    for(const {key,c} of results){ if(c&&c.length){DATASETS[key]=c;found=true;} }
     if(found){ hideLoading(); showApp(); return; }
   }catch(e){ console.warn(e); }
 
-  // Sem cache — tenta carregar os JSON do servidor automaticamente (Netlify)
+  // Sem cache — tenta carregar os JSON do servidor automaticamente
   showLoading('A carregar dados do servidor…');
-  let loaded=0;
-  for(const est of ESTADOS){
+  const fetched=await Promise.all(ESTADOS.map(async est=>{
     try{
       const r=await fetch('./'+est.file,{cache:'no-cache'});
-      if(!r.ok) continue;
+      if(!r.ok) return null;
       const json=await r.json();
       const records=Array.isArray(json)?json:(json.records||json);
       records.forEach(rec=>{if(!rec.estado)rec.estado=est.label;});
       DATASETS[est.key]=records;
-      await dbSet('data_'+est.key,records);
-      loaded++;
-    }catch(e){ /* ficheiro não disponível (local) — ignora */ }
-  }
-  if(loaded>0){ hideLoading(); showApp(); return; }
+      dbSet('data_'+est.key,records).catch(()=>{});
+      return est.key;
+    }catch(e){ return null; /* ficheiro não disponível (local) — ignora */ }
+  }));
+  if(fetched.filter(Boolean).length>0){ hideLoading(); showApp(); return; }
 
   // Nada funcionou — mostra ecrã de importação manual
   hideLoading();
@@ -881,20 +883,29 @@ async function loadChangesBanner(){
   }catch(e){ /* sem alteracoes.json — não mostra nada */ }
 }
 
-function showApp(){
+async function showApp(){
   document.getElementById('import-screen').classList.remove('active');
+  restoreFiltersFromURL();
+  await ensureDatasetsForEstado(document.getElementById('f-estado').value);
   rebuildALL();
   updateHeaderMeta();
-  buildSelects();
   document.getElementById('toolbar').classList.add('active');
   document.getElementById('legend-bar').classList.add('active');
   document.getElementById('validade-bar').classList.add('active');
-  loadChangesBanner();
-  updateValidadeBar();
+
+  // Mostra já a tabela com os dados que já temos — não espera pelas
+  // listas de filtros (Cultura/Inimigo/Nome Científico), que exigem
+  // percorrer os 130 mil registos e só servem depois de já se ver algo no ecrã.
+  applyFilters();
   requestAnimationFrame(updateStickyTop);
   window.addEventListener('resize',updateStickyTop);
-  restoreFiltersFromURL();
-  applyFilters();
+
+  // Trabalho pesado, adiado para depois da primeira pintura da tabela
+  setTimeout(()=>{
+    buildSelects();
+    updateValidadeBar();
+    loadChangesBanner();
+  },0);
 }
 
 /* Lê todos os filtros ativos e guarda-os na URL (sem recarregar a página),
@@ -1486,19 +1497,22 @@ document.getElementById('f-funcao').addEventListener('change',()=>{PAGE=1;applyF
 document.getElementById('f-pp').addEventListener('change',()=>{PAGE=1;applyFilters();});
 
 // Estado — carrega dataset se ainda não estiver em memória
-document.getElementById('f-estado').addEventListener('change', async ()=>{
-  const key = document.getElementById('f-estado').value;
+/* Garante que o(s) dataset(s) necessário(s) para o valor de Estado dado
+   estão carregados em DATASETS — usada tanto ao mudar o filtro como ao
+   restaurar o estado a partir da URL no arranque. */
+async function ensureDatasetsForEstado(key){
   if(key==='CANC'){
     for(const k of ['CVP','CVIP','CVUI']){ if(!DATASETS[k]) await loadDataset(k); }
   } else if(key && !DATASETS[key]){
     await loadDataset(key);
+  } else if(!key){
+    for(const est of ESTADOS){ if(!DATASETS[est.key]) await loadDataset(est.key); }
   }
-  // Se "Todas", garante que todos os datasets estão carregados
-  if(!key){
-    for(const est of ESTADOS){
-      if(!DATASETS[est.key]) await loadDataset(est.key);
-    }
-  }
+}
+
+document.getElementById('f-estado').addEventListener('change', async ()=>{
+  const key = document.getElementById('f-estado').value;
+  await ensureDatasetsForEstado(key);
   rebuildALL();
   buildSelects();
   updateHeaderMeta();
