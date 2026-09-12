@@ -7,12 +7,23 @@ O que faz, por ordem:
      (atualizado diariamente do lado deles).
   2. Lê os dois ficheiros de correspondência mantidos manualmente neste
      repositório:
-       - data/culturas_crosswalk.json   (cultura SIFITO -> product_code EU)
-       - data/substancias_crosswalk.json (substância SIFITO -> pesticide_residue_id EU)
-  3. Cruza tudo e produz data/lmr_data.json, no formato:
-       { "<cultura SIFITO>": { "<substância SIFITO>": {"mrl": ..., "unidade": "mg/kg",
-                                                          "is_default": bool,
-                                                          "regulamento": ..., "url": ...} } }
+       - culturas_crosswalk.json    (cultura SIFITO -> product_code EU)
+       - substancias_crosswalk.json (substância SIFITO -> pesticide_residue_id EU)
+  3. Cruza tudo e produz uma pasta lmr/ com um ficheiro JSON por cultura
+     (lmr/<slug-da-cultura>.json), mais um lmr/_index.json que faz a
+     correspondência entre o nome exato da cultura (tal como aparece no
+     SIFITO) e o nome do ficheiro respetivo. Isto evita carregar tudo de
+     uma vez no browser - o usos.html só descarrega o ficheiro da cultura
+     que o utilizador está a ver, no momento em que abre o detalhe.
+
+     Formato de cada lmr/<slug>.json:
+       { "<substância SIFITO>": {"mrl": ..., "unidade": "mg/kg",
+                                   "is_default": bool,
+                                   "regulamento": ..., "url_regulamento": ...} }
+
+     Formato de lmr/_index.json:
+       { "<cultura SIFITO>": "<slug>.json" }
+
 
 Pensado para correr dentro de um GitHub Action agendado (ver
 .github/workflows/update-lmr.yml) - não precisa de argumentos nem de
@@ -28,6 +39,7 @@ import json
 import re
 import sys
 import time
+import unicodedata
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -196,6 +208,54 @@ def build_lmr_data(culturas: dict, substancias: dict, mrl_index: dict) -> dict:
     return output
 
 
+def slugify(nome: str) -> str:
+    """
+    Converte um nome de cultura num nome de ficheiro seguro: sem acentos,
+    minúsculas, só letras/números/hífens. Ex.: "Couve-de-Bruxelas" ->
+    "couve-de-bruxelas"; "Aipo (folhas e caules)" -> "aipo-folhas-e-caules".
+    """
+    sem_acentos = unicodedata.normalize("NFKD", nome).encode("ascii", "ignore").decode("ascii")
+    slug = re.sub(r"[^a-zA-Z0-9]+", "-", sem_acentos).strip("-").lower()
+    return slug or "cultura"
+
+
+def write_output_files(lmr_data: dict) -> None:
+    """
+    Escreve um ficheiro JSON por cultura dentro de lmr/, mais o índice
+    lmr/_index.json que liga o nome exato da cultura (como está no SIFITO)
+    ao nome do ficheiro. Usa nomes de ficheiro únicos mesmo que duas
+    culturas dessem o mesmo slug (acrescenta um número).
+    """
+    lmr_dir = BASE_DIR / "lmr"
+    lmr_dir.mkdir(exist_ok=True)
+
+    index: dict[str, str] = {}
+    slugs_usados: dict[str, int] = {}
+
+    for cultura_nome, substancias_info in lmr_data.items():
+        base_slug = slugify(cultura_nome)
+        contagem = slugs_usados.get(base_slug, 0)
+        slugs_usados[base_slug] = contagem + 1
+        slug = base_slug if contagem == 0 else f"{base_slug}-{contagem + 1}"
+        nome_ficheiro = f"{slug}.json"
+
+        with open(lmr_dir / nome_ficheiro, "w", encoding="utf-8") as f:
+            json.dump(substancias_info, f, ensure_ascii=False, separators=(",", ":"))
+
+        index[cultura_nome] = nome_ficheiro
+
+    with open(lmr_dir / "_index.json", "w", encoding="utf-8") as f:
+        json.dump(index, f, ensure_ascii=False, indent=1, sort_keys=True)
+
+    tamanho_total = sum((lmr_dir / p).stat().st_size for p in index.values())
+    print(
+        f"[info] {len(index)} ficheiros gerados em {lmr_dir} "
+        f"({tamanho_total / 1024:.0f} KB no total, maior ficheiro individual "
+        f"muito mais pequeno que isso).",
+        file=sys.stderr,
+    )
+
+
 def main() -> None:
     print("[info] a descarregar ficheiro de MRLs da Comissão Europeia...", file=sys.stderr)
     records = fetch_mrl_flat_file()
@@ -205,12 +265,7 @@ def main() -> None:
     mrl_index = index_mrl_by_residue_and_product(records)
 
     lmr_data = build_lmr_data(culturas, substancias, mrl_index)
-
-    output_path = DATA_DIR / "lmr_data.json"
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(lmr_data, f, ensure_ascii=False, separators=(",", ":"))
-
-    print(f"[info] ficheiro gerado: {output_path} ({output_path.stat().st_size} bytes)", file=sys.stderr)
+    write_output_files(lmr_data)
 
 
 if __name__ == "__main__":

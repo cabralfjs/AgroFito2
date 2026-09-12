@@ -1,11 +1,12 @@
 name: Atualizar dados de LMR (UE)
 
-# Corre todos os dias às 06:00 UTC (07:00/08:00 em Portugal, consoante hora
-# de verão), e também pode ser despoletado manualmente a partir do separador
-# "Actions" do GitHub sempre que precisares de forçar uma atualização.
+# Corre uma vez por semana, à segunda-feira às 06:00 UTC (07:00/08:00 em
+# Portugal, consoante hora de verão), e também pode ser despoletado
+# manualmente a partir do separador "Actions" do GitHub sempre que
+# precisares de forçar uma atualização.
 on:
   schedule:
-    - cron: "0 6 * * *"
+    - cron: "0 6 * * 1"
   workflow_dispatch: {}
 
 permissions:
@@ -26,21 +27,21 @@ jobs:
       - name: Correr o script de atualização
         run: python update_lmr.py
 
-      - name: Verificar se o ficheiro mudou
+      - name: Verificar se algum ficheiro mudou
         id: diff
         run: |
-          if git diff --quiet -- lmr_data.json; then
+          if [ -z "$(git status --porcelain -- lmr/)" ]; then
             echo "mudou=false" >> "$GITHUB_OUTPUT"
           else
             echo "mudou=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Publicar o ficheiro atualizado
+      - name: Publicar os ficheiros atualizados
         if: steps.diff.outputs.mudou == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add lmr_data.json
+          git add lmr/
           git commit -m "Atualização automática dos dados de LMR ($(date -u +%Y-%m-%d))"
           git push
 
