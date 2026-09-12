@@ -291,6 +291,28 @@ hr.dp-sep{border:none;border-top:1px solid var(--border);margin:.75rem 0}
   .btn-detail{width:24px;height:24px}
   .btn-detail-icon{font-size:.8rem}
 }
+
+/* ══════════════ LMR (Limites Máximos de Resíduos - UE) ══════════════ */
+.lmr-section{padding-top:.25rem}
+.lmr-loading{color:#888;font-size:.85rem;padding:.4rem 0}
+.lmr-item{
+  border-left:3px solid #ccc;
+  padding:.4rem .7rem;
+  margin:.4rem 0;
+  border-radius:0 6px 6px 0;
+  background:#fafafa;
+  font-size:.9rem;
+}
+.lmr-item.lmr-ok{border-left-color:#4a8c3c;background:#f3f9f1}
+.lmr-item.lmr-default{border-left-color:#c98a2b;background:#fbf4e8}
+.lmr-item.lmr-none{border-left-color:#bbb;color:#777;font-style:italic}
+.lmr-badge{
+  font-size:.7rem;font-weight:600;color:#8a5a12;background:#f5e2bd;
+  padding:1px 7px;border-radius:4px;margin-left:.4rem;
+}
+.lmr-meta{font-size:.78rem;color:#666;margin-top:.15rem}
+.lmr-meta a{color:#4a7c3c}
+.lmr-disclaimer{font-size:.78rem;color:#888;margin-top:.6rem;line-height:1.4}
 </style>
 </head>
 <body>
@@ -474,6 +496,9 @@ const ESTADO_BY_LABEL = Object.fromEntries(ESTADOS.map(e=>[e.label,e]));
 /* ══════════════ STATE ══════════════ */
 let ALL=[], FILT=[], PAGE=1, PP=100;
 let SORT_COL=null, SORT_ASC=true;
+let CURRENT_DETAIL_IDX=null;   // registo atualmente aberto no painel de detalhe (para LMR)
+let LMR_INDEX=null;            // índice cultura -> ficheiro lmr/<slug>.json (carregado uma vez)
+const LMR_CACHE={};            // cache dos ficheiros lmr/*.json já pedidos nesta sessão
 const DATASETS={};   // { AUT:[...], CAN:[...], ... }
 
 const DB_NAME='sifito_db3', DB_VER=1, STORE='records';
@@ -1404,8 +1429,82 @@ function goPage(n){
 }
 
 /* ══════════════ DETAIL PANEL ══════════════ */
+/* ══════════════ LMR (Limites Máximos de Resíduos - UE) ══════════════ */
+async function carregarLMR(cultura){
+  if(!LMR_INDEX){
+    try{
+      LMR_INDEX = await fetch('lmr/_index.json').then(r=>r.json());
+    }catch(e){
+      console.error('Não foi possível carregar o índice de LMR:', e);
+      LMR_INDEX = {};
+    }
+  }
+  const ficheiro = LMR_INDEX[cultura];
+  if(!ficheiro) return null;
+
+  if(!LMR_CACHE[ficheiro]){
+    try{
+      LMR_CACHE[ficheiro] = await fetch('lmr/'+ficheiro).then(r=>r.json());
+    }catch(e){
+      console.error('Não foi possível carregar lmr/'+ficheiro+':', e);
+      return null;
+    }
+  }
+  return LMR_CACHE[ficheiro];
+}
+
+function renderLMRBlocos(r, dadosCultura){
+  if(!dadosCultura){
+    return `<div class="lmr-item lmr-none">Sem dados de LMR disponíveis para esta cultura.</div>`;
+  }
+  const substancias=(r.substancia||'').split('+').map(s=>s.trim()).filter(Boolean);
+
+  return substancias.map(sub=>{
+    const info=dadosCultura[sub];
+    if(!info){
+      return `<div class="lmr-item lmr-none">
+          <strong>${esc(sub)}</strong> — sem LMR específico definido na base da UE
+        </div>`;
+    }
+    const valores=Array.isArray(info)?info:[info];
+    return valores.map(v=>`
+      <div class="lmr-item ${v.is_default?'lmr-default':'lmr-ok'}">
+        <strong>${esc(sub)}</strong> — ${v.mrl} mg/kg
+        ${v.is_default?'<span class="lmr-badge">valor por defeito</span>':''}
+        <div class="lmr-meta">
+          Produto UE: ${esc(v.produto_eu)}${v.regulamento?` · <a href="${esc(v.url_regulamento)}" target="_blank" rel="noopener">${esc(v.regulamento)}</a>`:''}
+        </div>
+      </div>`).join('');
+  }).join('');
+}
+
+function renderLMRSectionPlaceholder(){
+  return `<hr class="dp-sep">
+    <div class="dp-obs-section lmr-section" id="lmr-section">
+      <label style="font-weight:600">Limite Máximo de Resíduos (UE)</label>
+      <div class="lmr-loading">A carregar…</div>
+    </div>`;
+}
+
+async function atualizarLMRSecao(idx, r){
+  const dadosCultura = await carregarLMR(r.cultura);
+  if(CURRENT_DETAIL_IDX!==idx) return; // o utilizador já abriu outro registo
+
+  const section=document.getElementById('lmr-section');
+  if(!section) return;
+
+  section.innerHTML=`
+    <label style="font-weight:600">Limite Máximo de Resíduos (UE)</label>
+    ${renderLMRBlocos(r, dadosCultura)}
+    <p class="lmr-disclaimer">
+      LMR = limite legal de resíduo no alimento colhido. Não confirma nem infirma
+      se este uso está autorizado em Portugal — essa informação está no resto da ficha.
+    </p>`;
+}
+
 function showDetail(idx){
   const r=FILT[idx]; if(!r) return;
+  CURRENT_DETAIL_IDX=idx;
 
   const field=(label,val,full=false)=>
     `<div class="dp-field${full?' dp-full':''}">
@@ -1468,9 +1567,12 @@ function showDetail(idx){
       ${obs('Situação Particular',             r.sit_particular)}
       ${obs('Época / Estado Fenológico',       r.epoca)}
       ${obs('Cond. e Restrições Específicas',  r.restricoes)}
-    </div>`:''}`;
+    </div>`:''}
+
+    ${renderLMRSectionPlaceholder()}`;
 
   document.getElementById('detail-overlay').classList.add('open');
+  atualizarLMRSecao(idx, r);
 }
 
 function closeDetail(e){
