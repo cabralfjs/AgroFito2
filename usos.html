@@ -877,6 +877,24 @@ function updateStickyTop(){
   document.documentElement.style.setProperty('--sticky-top',(hh+th)+'px');
 }
 
+/* Observa a própria barra de filtros (não só a janela): qualquer mudança
+   no seu conteúdo que altere a altura (botão "Limpar" a aparecer, textos
+   a ajustar, contadores a carregar e a forçar quebra de linha, etc.)
+   recalcula a posição das barras coladas por baixo, em vez de ficar presa
+   à medição feita no arranque. */
+let _stickyObserverStarted=false;
+function startStickyObserver(){
+  if(_stickyObserverStarted) return;
+  _stickyObserverStarted=true;
+  const toolbar=document.getElementById('toolbar');
+  const header=document.querySelector('header');
+  if(window.ResizeObserver){
+    const ro=new ResizeObserver(()=>updateStickyTop());
+    ro.observe(toolbar);
+    ro.observe(header);
+  }
+}
+
 /* ══════════════ BANNER "O QUE MUDOU" ══════════════
    Lê o alteracoes.json gerado pelo workflow semanal (compute_changes.py).
    Se o ficheiro não existir ainda, ou não houver nada a assinalar,
@@ -923,6 +941,7 @@ async function showApp(){
   // percorrer os 130 mil registos e só servem depois de já se ver algo no ecrã.
   applyFilters();
   requestAnimationFrame(updateStickyTop);
+  startStickyObserver();
   window.addEventListener('resize',updateStickyTop);
 
   // Trabalho pesado, adiado para depois da primeira pintura da tabela

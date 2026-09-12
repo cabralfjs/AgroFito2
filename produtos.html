@@ -536,6 +536,24 @@ function updateStickyTop(){
   document.documentElement.style.setProperty('--sticky-top',(hh+th)+'px');
 }
 
+/* Observa a própria barra de filtros (não só a janela): qualquer mudança
+   no seu conteúdo que altere a altura (botão "Limpar" a aparecer, textos
+   a ajustar, contadores a carregar e a forçar quebra de linha, etc.)
+   recalcula a posição das barras coladas por baixo, em vez de ficar presa
+   à medição feita no arranque. */
+let _stickyObserverStarted=false;
+function startStickyObserver(){
+  if(_stickyObserverStarted) return;
+  _stickyObserverStarted=true;
+  const toolbar=document.getElementById('toolbar');
+  const header=document.querySelector('header');
+  if(window.ResizeObserver){
+    const ro=new ResizeObserver(()=>updateStickyTop());
+    ro.observe(toolbar);
+    ro.observe(header);
+  }
+}
+
 /* ══ SHOW APP ══ */
 function showApp(){
   document.getElementById('import-screen').classList.remove('active');
@@ -543,6 +561,7 @@ function showApp(){
   document.getElementById('toolbar').classList.add('active');
   document.getElementById('legend-bar').classList.add('active');
   requestAnimationFrame(updateStickyTop);
+  startStickyObserver();
   window.addEventListener('resize',updateStickyTop);
   restoreFiltersFromURL();
   applyFilters();
