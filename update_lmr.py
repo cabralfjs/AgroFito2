@@ -37,8 +37,13 @@ DATA_DIR = BASE_DIR
 
 MRL_URL = (
     "https://api.datalake.sante.service.ec.europa.eu/sante/pesticides/"
-    "pesticide-residues-mrls-download?language=EN&format=json&api-version=v3.0"
+    "pesticide-residues-mrls-download?language_code=EN&format=json&api-version=v3.0"
 )
+# Nota: a documentação oficial "Pesticides – APIs V3.0" da Comissão chama a
+# este parâmetro "language". Na prática, a API viva exige "language_code" -
+# confirmado pela mensagem de erro "Required parameter language_code
+# missing." Se um dia isto voltar a falhar com 400, é o primeiro sítio a
+# verificar (a Comissão pode corrigir a API para bater certo com a doc).
 
 REQUEST_TIMEOUT = 180
 MAX_RETRIES = 3
