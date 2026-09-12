@@ -28,6 +28,7 @@ import json
 import re
 import sys
 import time
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -36,11 +37,23 @@ DATA_DIR = BASE_DIR
 
 MRL_URL = (
     "https://api.datalake.sante.service.ec.europa.eu/sante/pesticides/"
-    "pesticide-residues-mrls-download?language=PT&format=json&api-version=v3.0"
+    "pesticide-residues-mrls-download?language=EN&format=json&api-version=v3.0"
 )
 
-REQUEST_TIMEOUT = 120
+REQUEST_TIMEOUT = 180
 MAX_RETRIES = 3
+
+# Alguns gateways da administração pública rejeitam (400/403) pedidos sem
+# cabeçalhos de um pedido "normal" de browser. Enviamos um User-Agent e
+# Accept explícitos para evitar isso - o urllib, por defeito, não os manda.
+REQUEST_HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+    ),
+    "Accept": "application/json, text/plain, */*",
+    "Accept-Language": "en-US,en;q=0.9,pt;q=0.8",
+}
 
 
 def fetch_mrl_flat_file() -> list[dict]:
@@ -48,7 +61,7 @@ def fetch_mrl_flat_file() -> list[dict]:
     last_error = None
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            req = urllib.request.Request(MRL_URL, headers={"Accept": "application/json"})
+            req = urllib.request.Request(MRL_URL, headers=REQUEST_HEADERS)
             with urllib.request.urlopen(req, timeout=REQUEST_TIMEOUT) as resp:
                 raw = resp.read().decode("utf-8")
             records = []
@@ -59,6 +72,19 @@ def fetch_mrl_flat_file() -> list[dict]:
             if not records:
                 raise ValueError("A API devolveu uma resposta vazia.")
             return records
+        except urllib.error.HTTPError as exc:
+            corpo = ""
+            try:
+                corpo = exc.read().decode("utf-8", errors="replace")[:500]
+            except Exception:  # noqa: BLE001
+                pass
+            last_error = exc
+            print(
+                f"[aviso] tentativa {attempt}/{MAX_RETRIES} falhou: {exc}. "
+                f"Resposta do servidor: {corpo!r}",
+                file=sys.stderr,
+            )
+            time.sleep(5 * attempt)
         except Exception as exc:  # noqa: BLE001 - queremos capturar e tentar de novo
             last_error = exc
             print(f"[aviso] tentativa {attempt}/{MAX_RETRIES} falhou: {exc}", file=sys.stderr)
