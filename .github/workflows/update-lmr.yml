@@ -1,0 +1,49 @@
+name: Atualizar dados de LMR (UE)
+
+# Corre todos os dias às 06:00 UTC (07:00/08:00 em Portugal, consoante hora
+# de verão), e também pode ser despoletado manualmente a partir do separador
+# "Actions" do GitHub sempre que precisares de forçar uma atualização.
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  atualizar-lmr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obter o repositório
+        uses: actions/checkout@v4
+
+      - name: Preparar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Correr o script de atualização
+        run: python update_lmr.py
+
+      - name: Verificar se o ficheiro mudou
+        id: diff
+        run: |
+          if git diff --quiet -- lmr_data.json; then
+            echo "mudou=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "mudou=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publicar o ficheiro atualizado
+        if: steps.diff.outputs.mudou == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add lmr_data.json
+          git commit -m "Atualização automática dos dados de LMR ($(date -u +%Y-%m-%d))"
+          git push
+
+      - name: Sem alterações
+        if: steps.diff.outputs.mudou == 'false'
+        run: echo "Os dados de LMR não mudaram desde a última atualização."
