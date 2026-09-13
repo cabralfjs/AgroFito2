@@ -1,19 +1,191 @@
 {
-  "gerado_em": "2026-09-07T11:37:02+00:00",
+  "gerado_em": "2026-09-13T17:51:10+00:00",
   "usos": {
-    "novas_canceladas": 0,
+    "novas_canceladas": 33,
     "reativadas": 0,
-    "novos_registos": 0,
-    "removidos": 0,
-    "detalhe_canceladas": [],
+    "novos_registos": 221,
+    "removidos": 2,
+    "detalhe_canceladas": [
+      {
+        "label": "MONTANA SUPRA 450 · Ameixeira · Infestantes dicotiledóneas anuais",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "MONTANA SUPRA 450 · Amendoeira · Infestantes dicotiledóneas anuais",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "MONTANA SUPRA 450 · Antes da instalação das culturas · Infestantes dicotiledóneas anuais",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "MONTANA SUPRA 450 · Aveleira · Infestantes dicotiledóneas anuais",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "MONTANA SUPRA 450 · Castanheiro · Infestantes dicotiledóneas anuais",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "MONTANA SUPRA 450 · Cerejeira · Infestantes dicotiledóneas anuais",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "MONTANA SUPRA 450 · Damasqueiro (=alperceiro, alpercheiro) · Infestantes dicotiledóneas anuais",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "MONTANA SUPRA 450 · Laranjeira · Infestantes dicotiledóneas anuais",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "MONTANA SUPRA 450 · Laranjeira-azeda · Infestantes dicotiledóneas anuais",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "MONTANA SUPRA 450 · Limoeiro · Infestantes dicotiledóneas anuais",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "MONTANA SUPRA 450 · Macieira · Infestantes dicotiledóneas anuais",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "MONTANA SUPRA 450 · Marmeleiro · Infestantes dicotiledóneas anuais",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "MONTANA SUPRA 450 · Nespereira · Infestantes dicotiledóneas anuais",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "MONTANA SUPRA 450 · Nogueira · Infestantes dicotiledóneas anuais",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "MONTANA SUPRA 450 · Oliveira · Infestantes dicotiledóneas anuais",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "MONTANA SUPRA 450 · Pereira · Infestantes dicotiledóneas anuais",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "MONTANA SUPRA 450 · Tangerineira (inclui clementina e híbridos) · Infestantes dicotiledóneas anuais",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "MONTANA SUPRA 450 · Videira · Infestantes dicotiledóneas anuais",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "ALASKA MICRO · Ameixeira · Lepra",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "ALASKA MICRO · Damasqueiro (=alperceiro, alpercheiro) · Oídio",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "ALASKA MICRO · Ervilheira · Oídio",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "ALASKA MICRO · Macieira · Pedrado",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "ALASKA MICRO · Macieira · Oídio",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "ALASKA MICRO · Meloeiro · Oídio",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "ALASKA MICRO · Morangueiro · Oídio",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "ALASKA MICRO · Pepino · Oídio",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "ALASKA MICRO · Pereira · Pedrado",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "ALASKA MICRO · Pessegueiro · Oídio",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "MONTANA SUPRA 450 · Pessegueiro · Infestantes dicotiledóneas anuais",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "ALASKA MICRO · Tomateiro · Oídio",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "ALASKA MICRO · Videira · Escoriose",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "ALASKA MICRO · Videira · Oídio",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "BAGO DE OURO 98,5% · Tomateiro · Oídio",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda e Util. Interditas"
+      }
+    ],
     "detalhe_reativadas": []
   },
   "produtos": {
-    "novas_canceladas": 0,
+    "novas_canceladas": 1,
     "reativadas": 0,
-    "novos_registos": 0,
-    "removidos": 0,
-    "detalhe_canceladas": [],
+    "novos_registos": 9,
+    "removidos": 2,
+    "detalhe_canceladas": [
+      {
+        "label": "ALASKA MICRO (SELECTIS)",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      }
+    ],
     "detalhe_reativadas": []
   }
 }
