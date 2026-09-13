@@ -2275,5 +2275,835 @@
   "substance_status": "Approved",
   "pesticide_residue_linked": "Fatty acids C7-C20",
   "pesticide_residue_id": 413
+ },
+ "Diflubenzurão": {
+  "en_name": "diflubenzuron",
+  "substance_id": 634,
+  "substance_name": "Diflubenzuron",
+  "cas_number": "35367-38-5",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Diflubenzuron",
+  "pesticide_residue_id": 277
+ },
+ "Flufenacete": {
+  "en_name": "flufenacet",
+  "substance_id": 1313,
+  "substance_name": "Flufenacet (formerly fluthiamide)",
+  "cas_number": "142459-58-3",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Flufenacet (sum of all compounds containing the N fluorophenyl-N-isopropyl moiety expressed as flufenacet)",
+  "pesticide_residue_id": 110
+ },
+ "S-metolacloro": {
+  "en_name": "S-metolachlor",
+  "substance_id": 1137,
+  "substance_name": "S-Metolachlor",
+  "cas_number": "87392-12-9",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Metolachlor and S-metolachlor (metolachlor including other mixtures of constituent isomers including S-metolachlor (sum of isomers))",
+  "pesticide_residue_id": 156
+ },
+ "Triflumurão": {
+  "en_name": "triflumuron",
+  "substance_id": 1007,
+  "substance_name": "Triflumuron",
+  "cas_number": "64628-44-0",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Triflumuron",
+  "pesticide_residue_id": 396
+ },
+ "acibenzolar-S-metilo": {
+  "en_name": "acibenzolar-S-methyl",
+  "substance_id": 1053,
+  "substance_name": "Acibenzolar-S-methyl (benzothiadiazole)",
+  "cas_number": "135158-54-2",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Acibenzolar-S-methyl (sum of acibenzolar-S-methyl and acibenzolar acid (free and conjugated), expressed as acibenzolar-S-methyl)",
+  "pesticide_residue_id": 11
+ },
+ "amitrol": {
+  "en_name": "amitrole",
+  "substance_id": 337,
+  "substance_name": "Amitrole (aminotriazole)",
+  "cas_number": "61-82-5",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Amitrole",
+  "pesticide_residue_id": 15
+ },
+ "benfluralina": {
+  "en_name": "benfluralin",
+  "substance_id": 444,
+  "substance_name": "Benfluralin",
+  "cas_number": "1861-40-1",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Benfluralin",
+  "pesticide_residue_id": 241
+ },
+ "beta-ciflutrina": {
+  "en_name": "beta-cyfluthrin",
+  "substance_id": 458,
+  "substance_name": "Beta-Cyfluthrin",
+  "cas_number": "1820573-27-0",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Cyfluthrin (cyfluthrin including other mixtures of constituent isomers (sum of isomers))",
+  "pesticide_residue_id": 63
+ },
+ "bromoxinil": {
+  "en_name": "bromoxynil",
+  "substance_id": 483,
+  "substance_name": "Bromoxynil",
+  "cas_number": "1689-84-5",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Bromoxynil and its salts, expressed as bromoxynil",
+  "pesticide_residue_id": 33
+ },
+ "bromoxinil (na forma de butirato)": {
+  "en_name": "bromoxynil",
+  "substance_id": 483,
+  "substance_name": "Bromoxynil",
+  "cas_number": "1689-84-5",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Bromoxynil and its salts, expressed as bromoxynil",
+  "pesticide_residue_id": 33
+ },
+ "bromoxinil (na forma de heptanoato/octanoato)": {
+  "en_name": "bromoxynil",
+  "substance_id": 483,
+  "substance_name": "Bromoxynil",
+  "cas_number": "1689-84-5",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Bromoxynil and its salts, expressed as bromoxynil",
+  "pesticide_residue_id": 33
+ },
+ "bromoxinil (na forma de octanoato)": {
+  "en_name": "bromoxynil",
+  "substance_id": 483,
+  "substance_name": "Bromoxynil",
+  "cas_number": "1689-84-5",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Bromoxynil and its salts, expressed as bromoxynil",
+  "pesticide_residue_id": 33
+ },
+ "ciproconazol": {
+  "en_name": "cyproconazole",
+  "substance_id": 594,
+  "substance_name": "Cyproconazole",
+  "cas_number": "94361-06-5",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Cyproconazole",
+  "pesticide_residue_id": 266
+ },
+ "clofentezina": {
+  "en_name": "clofentezine",
+  "substance_id": 564,
+  "substance_name": "Clofentezine",
+  "cas_number": "74115-24-5",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Clofentezine",
+  "pesticide_residue_id": 60
+ },
+ "clorpirifos": {
+  "en_name": "chlorpyrifos",
+  "substance_id": 548,
+  "substance_name": "Chlorpyrifos",
+  "cas_number": "2921-88-2",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Chlorpyrifos",
+  "pesticide_residue_id": 56
+ },
+ "clorpirifos-metilo": {
+  "en_name": "chlorpyrifos-methyl",
+  "substance_id": 549,
+  "substance_name": "Chlorpyrifos-methyl",
+  "cas_number": "5598-13-0",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Chlorpyrifos-methyl",
+  "pesticide_residue_id": 57
+ },
+ "clorprofame": {
+  "en_name": "chlorpropham",
+  "substance_id": 1356,
+  "substance_name": "Chlorpropham",
+  "cas_number": "101-21-3",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Chlorpropham",
+  "pesticide_residue_id": 55
+ },
+ "clortalonil": {
+  "en_name": "chlorothalonil",
+  "substance_id": 544,
+  "substance_name": "Chlorothalonil",
+  "cas_number": "1897-45-6",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Chlorothalonil",
+  "pesticide_residue_id": 53
+ },
+ "desmedifame": {
+  "en_name": "desmedipham",
+  "substance_id": 605,
+  "substance_name": "Desmedipham",
+  "cas_number": "13684-56-5",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Desmedipham",
+  "pesticide_residue_id": 70
+ },
+ "dimetoato": {
+  "en_name": "dimethoate",
+  "substance_id": 1214,
+  "substance_name": "Dimethoate",
+  "cas_number": "60-51-5",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Dimethoate",
+  "pesticide_residue_id": 76
+ },
+ "dimetomorfe": {
+  "en_name": "dimethomorph",
+  "substance_id": 644,
+  "substance_name": "Dimethomorph",
+  "cas_number": "110488-70-5",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Dimethomorph (sum of isomers)",
+  "pesticide_residue_id": 281
+ },
+ "diquato (na forma de sal dibrometo)": {
+  "en_name": "diquat",
+  "substance_id": 659,
+  "substance_name": "Diquat",
+  "cas_number": "85-00-7",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Diquat",
+  "pesticide_residue_id": 81
+ },
+ "espinetorame": {
+  "en_name": "spinetoram",
+  "substance_id": 1166,
+  "substance_name": "Spinetoram",
+  "cas_number": "See note ",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Spinetoram (XDE-175)",
+  "pesticide_residue_id": 805
+ },
+ "espirodiclofena": {
+  "en_name": "spirodiclofen",
+  "substance_id": 1168,
+  "substance_name": "Spirodiclofen",
+  "cas_number": "148477-71-8",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Spirodiclofen",
+  "pesticide_residue_id": 374
+ },
+ "famoxadona": {
+  "en_name": "oxadiargyl",
+  "substance_id": 927,
+  "substance_name": "Oxadiargyl",
+  "cas_number": "39807-15-3",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Oxadiargyl",
+  "pesticide_residue_id": 168
+ },
+ "flufenacete": {
+  "en_name": "flufenacet",
+  "substance_id": 1313,
+  "substance_name": "Flufenacet (formerly fluthiamide)",
+  "cas_number": "142459-58-3",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Flufenacet (sum of all compounds containing the N fluorophenyl-N-isopropyl moiety expressed as flufenacet)",
+  "pesticide_residue_id": 110
+ },
+ "glifosato": {
+  "en_name": "glyphosate",
+  "substance_id": 811,
+  "substance_name": "Glyphosate",
+  "cas_number": "1071-83-6",
+  "substance_status": "Approved",
+  "pesticide_residue_linked": "Glyphosate",
+  "pesticide_residue_id": 120
+ },
+ "glifosato (na forma de sal de sódio)": {
+  "en_name": "glyphosate",
+  "substance_id": 811,
+  "substance_name": "Glyphosate",
+  "cas_number": "1071-83-6",
+  "substance_status": "Approved",
+  "pesticide_residue_linked": "Glyphosate",
+  "pesticide_residue_id": 120
+ },
+ "glufosinato (na forma de sal de amónio)": {
+  "en_name": "glufosinate",
+  "substance_id": 79,
+  "substance_name": "Glufosinate",
+  "cas_number": "77182-82-2",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Glufosinate (sum of glufosinate isomers, its salts and its metabolites 3-[hydroxy(methyl)phosphinoyl]propionic acid (MPP) and N-acetyl-glufosinate (NAG), expressed as glufosinate)",
+  "pesticide_residue_id": 320
+ },
+ "imidaclopride": {
+  "en_name": "imidacloprid",
+  "substance_id": 688,
+  "substance_name": "Imidacloprid",
+  "cas_number": "138261-41-3",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Imidacloprid",
+  "pesticide_residue_id": 326
+ },
+ "indoxacarbe": {
+  "en_name": "indoxacarb",
+  "substance_id": 229,
+  "substance_name": "Indoxacarb",
+  "cas_number": "173584-44-6",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Indoxacarb (sum of indoxacarb and its R enantiomer)",
+  "pesticide_residue_id": 132
+ },
+ "iprodiona": {
+  "en_name": "iprodione",
+  "substance_id": 234,
+  "substance_name": "Iprodione",
+  "cas_number": "36734-19-7",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Iprodione",
+  "pesticide_residue_id": 135
+ },
+ "mancozebe": {
+  "en_name": "mancozeb",
+  "substance_id": 277,
+  "substance_name": "Mancozeb",
+  "cas_number": "8018-01-7",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Dithiocarbamates (dithiocarbamates expressed as CS2, including maneb, mancozeb, metiram, propineb, thiram and ziram)",
+  "pesticide_residue_id": 83
+ },
+ "metaflumizona": {
+  "en_name": "metaflumizone",
+  "substance_id": 205,
+  "substance_name": "Metaflumizone",
+  "cas_number": "139968-49-3",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Metaflumizone (sum of E- and Z- isomers)",
+  "pesticide_residue_id": 793
+ },
+ "metribuzina": {
+  "en_name": "metribuzin",
+  "substance_id": 845,
+  "substance_name": "Metribuzin",
+  "cas_number": "21087-64-9 ",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Metribuzin",
+  "pesticide_residue_id": 341
+ },
+ "miclobutanil": {
+  "en_name": "myclobutanil",
+  "substance_id": 893,
+  "substance_name": "Myclobutanil",
+  "cas_number": "88671-89-0",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Myclobutanil  (sum of  constituent isomers)",
+  "pesticide_residue_id": 166
+ },
+ "picoxistrobina": {
+  "en_name": "picoxystrobin",
+  "substance_id": 824,
+  "substance_name": "Picoxystrobin",
+  "cas_number": "117428-22-5",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Picoxystrobin",
+  "pesticide_residue_id": 182
+ },
+ "tiabendazol (na forma de sal hipofosfito)": {
+  "en_name": "thiabendazole",
+  "substance_id": 795,
+  "substance_name": "Thiabendazole",
+  "cas_number": "148-79-8",
+  "substance_status": "Approved",
+  "pesticide_residue_linked": "Thiabendazole",
+  "pesticide_residue_id": 210
+ },
+ "tiaclopride": {
+  "en_name": "thiacloprid",
+  "substance_id": 841,
+  "substance_name": "Thiacloprid",
+  "cas_number": "111988-49-9",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Thiacloprid",
+  "pesticide_residue_id": 211
+ },
+ "tiametoxame": {
+  "en_name": "thiamethoxam",
+  "substance_id": 796,
+  "substance_name": "Thiamethoxam",
+  "cas_number": "153719-23-4",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Thiamethoxam",
+  "pesticide_residue_id": 388
+ },
+ "tritossulfurão": {
+  "en_name": "triasulfuron",
+  "substance_id": 1006,
+  "substance_name": "Triasulfuron",
+  "cas_number": "82097-50-5",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Triasulfuron",
+  "pesticide_residue_id": 217
+ },
+ "2,4-DB (na forma de sal de sódio)": {
+  "en_name": "2,4-DB",
+  "substance_id": 395,
+  "substance_name": "2,4-DB",
+  "cas_number": "94-82-6",
+  "substance_status": "Approved",
+  "pesticide_residue_linked": "2,4-DB (sum of 2,4-DB, its salts, its esters and its conjugates, expressed as 2,4-DB)",
+  "pesticide_residue_id": 5
+ },
+ "acrinatrina": {
+  "en_name": "acrinathrin",
+  "substance_id": 1056,
+  "substance_name": "Acrinathrin",
+  "cas_number": "101007-06-1",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Acrinathrin",
+  "pesticide_residue_id": 234
+ },
+ "alfa-cipermetrina": {
+  "en_name": "alpha-cypermethrin",
+  "substance_id": 325,
+  "substance_name": "Alpha-Cypermethrin (aka alphamethrin)",
+  "cas_number": "67375-30-8",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Cypermethrin (cypermethrin including other mixtures of constituent isomers (sum of isomers))",
+  "pesticide_residue_id": 65
+ },
+ "azimsulfurão": {
+  "en_name": "azimsulfuron",
+  "substance_id": 423,
+  "substance_name": "Azimsulfuron",
+  "cas_number": "120162-55-2",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Azimsulfuron",
+  "pesticide_residue_id": 18
+ },
+ "benalaxil": {
+  "en_name": "benalaxyl",
+  "substance_id": 1345,
+  "substance_name": "Benalaxyl",
+  "cas_number": "71626-11-4",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Benalaxyl including other mixtures of constituent isomers including benalaxyl-M (sum of isomers)",
+  "pesticide_residue_id": 24
+ },
+ "bentiavalicarbe (na forma de éster isopropílico)": {
+  "en_name": "benthiavalicarb",
+  "substance_id": 452,
+  "substance_name": "Benthiavalicarb",
+  "cas_number": "413615-35-7",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Benthiavalicarb-isopropyl (sum of benthiavalicarb-isopropyl (KIF 230 R-L) and its RS enantiomer (KIF 230-S-D))",
+  "pesticide_residue_id": 3950
+ },
+ "bispiribac (na forma de sal de sódio)": {
+  "en_name": "bispyribac",
+  "substance_id": 466,
+  "substance_name": "Bispyribac",
+  "cas_number": "125401-75-4",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Bispyribac (sum of bispyribac, its salts and its esters, expressed as bispyribac)",
+  "pesticide_residue_id": 2517
+ },
+ "bromadiolona": {
+  "en_name": "bromadiolone",
+  "substance_id": 476,
+  "substance_name": "Bromadiolone",
+  "cas_number": "28772-56-7",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Bromadiolone",
+  "pesticide_residue_id": 2510
+ },
+ "buprofezina": {
+  "en_name": "buprofezin",
+  "substance_id": 486,
+  "substance_name": "Buprofezin",
+  "cas_number": "69327-76-0",
+  "substance_status": "Approved",
+  "pesticide_residue_linked": "Buprofezin",
+  "pesticide_residue_id": 248
+ },
+ "ciromazina": {
+  "en_name": "cyromazine",
+  "substance_id": 596,
+  "substance_name": "Cyromazine",
+  "cas_number": "66215-27-8",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Cyromazine",
+  "pesticide_residue_id": 66
+ },
+ "clotianidina": {
+  "en_name": "clothianidin",
+  "substance_id": 867,
+  "substance_name": "Clothianidin",
+  "cas_number": "210880-92-5",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Clothianidin",
+  "pesticide_residue_id": 775
+ },
+ "dodecan-1-ol": {
+  "en_name": "dodecan-1-ol",
+  "substance_id": 1064,
+  "substance_name": "Dodecan-1-ol (SCLP Alcohols)",
+  "cas_number": "112-53-8",
+  "substance_status": "Approved",
+  "pesticide_residue_linked": "Straight Chain Lepidopteran Pheromones (SCLP)",
+  "pesticide_residue_id": 3350
+ },
+ "epoxiconazol": {
+  "en_name": "epoxiconazole",
+  "substance_id": 701,
+  "substance_name": "Epoxiconazole",
+  "cas_number": "133855-98-8",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Epoxiconazole",
+  "pesticide_residue_id": 288
+ },
+ "espiromesifena": {
+  "en_name": "spiromesifen",
+  "substance_id": 1169,
+  "substance_name": "Spiromesifen",
+  "cas_number": "283594-90-1",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Spiromesifen",
+  "pesticide_residue_id": 375
+ },
+ "espirotetramato": {
+  "en_name": "spirotetramat",
+  "substance_id": 1170,
+  "substance_name": "Spirotetramat",
+  "cas_number": "203313-25-1",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Spirotetramat and spirotetramat-enol (sum of), expressed as spirotetramat",
+  "pesticide_residue_id": 2750
+ },
+ "fenamidona": {
+  "en_name": "fenamidone",
+  "substance_id": 119,
+  "substance_name": "Fenamidone",
+  "cas_number": "161326-34-7",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Fenamidone",
+  "pesticide_residue_id": 94
+ },
+ "fenamifos": {
+  "en_name": "fenamiphos",
+  "substance_id": 121,
+  "substance_name": "Fenamiphos (aka phenamiphos)",
+  "cas_number": "22224-92-6",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Fenamiphos (sum of fenamiphos and its sulphoxide and sulphone expressed as fenamiphos)",
+  "pesticide_residue_id": 95
+ },
+ "fenebuconazol": {
+  "en_name": "fenbuconazole",
+  "substance_id": 125,
+  "substance_name": "Fenbuconazole",
+  "cas_number": "114369-43-6",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Fenbuconazole (sum of constituent enantiomers)",
+  "pesticide_residue_id": 297
+ },
+ "fenepirazamina": {
+  "en_name": "fenpyrazamine",
+  "substance_id": 683,
+  "substance_name": "Fenpyrazamine",
+  "cas_number": "473798-59-3",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Fenpyrazamine",
+  "pesticide_residue_id": 2281
+ },
+ "fenoxicarbe": {
+  "en_name": "fenoxycarb",
+  "substance_id": 10,
+  "substance_name": "Fenoxycarb",
+  "cas_number": "72490-01-8",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Fenoxycarb",
+  "pesticide_residue_id": 299
+ },
+ "flurocloridona": {
+  "en_name": "flurochloridone",
+  "substance_id": 733,
+  "substance_name": "Flurochloridone",
+  "cas_number": "61213-25-0",
+  "substance_status": "Approved",
+  "pesticide_residue_linked": "Flurochloridone (sum of cis- and trans- isomers)",
+  "pesticide_residue_id": 312
+ },
+ "flutriafol": {
+  "en_name": "flutriafol",
+  "substance_id": 740,
+  "substance_name": "Flutriafol",
+  "cas_number": "76674-21-0",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Flutriafol",
+  "pesticide_residue_id": 315
+ },
+ "fosmete": {
+  "en_name": "phosmet",
+  "substance_id": 850,
+  "substance_name": "Phosmet",
+  "cas_number": "732-11-6",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Phosmet",
+  "pesticide_residue_id": 3190
+ },
+ "ipconazol": {
+  "en_name": "ipconazole",
+  "substance_id": 233,
+  "substance_name": "Ipconazole",
+  "cas_number": "125225-28-7",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Ipconazole",
+  "pesticide_residue_id": 788
+ },
+ "isoproturão": {
+  "en_name": "isoproturon",
+  "substance_id": 246,
+  "substance_name": "Isoproturon",
+  "cas_number": "34123-59-6",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Isoproturon",
+  "pesticide_residue_id": 137
+ },
+ "linurão": {
+  "en_name": "linuron",
+  "substance_id": 270,
+  "substance_name": "Linuron",
+  "cas_number": "330-55-2",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Linuron",
+  "pesticide_residue_id": 142
+ },
+ "lufenurão": {
+  "en_name": "lufenuron",
+  "substance_id": 271,
+  "substance_name": "Lufenuron",
+  "cas_number": "103055-07-8",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Lufenuron (any ratio of constituent isomers)",
+  "pesticide_residue_id": 329
+ },
+ "mecoprope-P (na forma de éster etilhexílico)": {
+  "en_name": "mecoprop-P",
+  "substance_id": 282,
+  "substance_name": "Mecoprop-P",
+  "cas_number": "16484-77-8",
+  "substance_status": "Approved",
+  "pesticide_residue_linked": "Mecoprop (sum of mecoprop-p and mecoprop expressed as mecoprop)",
+  "pesticide_residue_id": 147
+ },
+ "mepanipirime": {
+  "en_name": "mepanipyrim",
+  "substance_id": 284,
+  "substance_name": "Mepanipyrim",
+  "cas_number": "110235-47-7",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Mepanipyrim",
+  "pesticide_residue_id": 148
+ },
+ "metiocarbe": {
+  "en_name": "methiocarb",
+  "substance_id": 217,
+  "substance_name": "Methiocarb (aka mercaptodimethur)",
+  "cas_number": "2032-65-7",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Methiocarb (sum of methiocarb and methiocarb sulfoxide and sulfone, expressed as methiocarb)",
+  "pesticide_residue_id": 337
+ },
+ "metirame": {
+  "en_name": "metiram",
+  "substance_id": 1385,
+  "substance_name": "Metiram",
+  "cas_number": "9006-42-2",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Dithiocarbamates (dithiocarbamates expressed as CS2, including maneb, mancozeb, metiram, propineb, thiram and ziram)",
+  "pesticide_residue_id": 83
+ },
+ "metomil": {
+  "en_name": "methomyl",
+  "substance_id": 218,
+  "substance_name": "Methomyl",
+  "cas_number": "16752-77-5",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Methomyl",
+  "pesticide_residue_id": 157
+ },
+ "metoxifenozida": {
+  "en_name": "methoxyfenozide",
+  "substance_id": 1321,
+  "substance_name": "Methoxyfenozide",
+  "cas_number": "161050-58-4",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Methoxyfenozide",
+  "pesticide_residue_id": 159
+ },
+ "oleato de potássio": {
+  "en_name": "potassium oleate",
+  "substance_id": 1302,
+  "substance_name": "Potassium oleate",
+  "cas_number": "143-18-0",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Default MRL of 0.01 mg/kg according to Art 18(1)(b) Reg 396 / 2005",
+  "pesticide_residue_id": null
+ },
+ "orizalina": {
+  "en_name": "oryzalin",
+  "substance_id": 925,
+  "substance_name": "Oryzalin",
+  "cas_number": "19044-88-3",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Oryzalin",
+  "pesticide_residue_id": 795
+ },
+ "oxadiazão": {
+  "en_name": "oxadiazon",
+  "substance_id": 928,
+  "substance_name": "Oxadiazon",
+  "cas_number": "19666-30-9",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Oxadiazon",
+  "pesticide_residue_id": 346
+ },
+ "oxamil": {
+  "en_name": "oxamyl",
+  "substance_id": 930,
+  "substance_name": "Oxamyl",
+  "cas_number": "23135-22-0",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Oxamyl",
+  "pesticide_residue_id": 169
+ },
+ "pencicurão": {
+  "en_name": "pencycuron",
+  "substance_id": 1192,
+  "substance_name": "Pencycuron",
+  "cas_number": "66063-05-6",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Pencycuron (sum of pencycuron and pencycuron-PB-amine, expressed as pencycuron)",
+  "pesticide_residue_id": 2653
+ },
+ "pimetrozina": {
+  "en_name": "pymetrozine",
+  "substance_id": 1405,
+  "substance_name": "Pymetrozine",
+  "cas_number": "123312-89-0",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Pymetrozine",
+  "pesticide_residue_id": 194
+ },
+ "procloraz": {
+  "en_name": "prochloraz",
+  "substance_id": 59,
+  "substance_name": "Prochloraz",
+  "cas_number": "67747-09-5",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Prochloraz (sum of prochloraz, BTS 44595 (M201-04) and BTS 44596 (M201-03), expressed as prochloraz)",
+  "pesticide_residue_id": 184
+ },
+ "profoxidime": {
+  "en_name": "profoxydim",
+  "substance_id": 62,
+  "substance_name": "Profoxydim",
+  "cas_number": "139001-49-3",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Profoxydim",
+  "pesticide_residue_id": 800
+ },
+ "propiconazol": {
+  "en_name": "propiconazole",
+  "substance_id": 75,
+  "substance_name": "Propiconazole",
+  "cas_number": "60207-90-1",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Propiconazole (sum of isomers)",
+  "pesticide_residue_id": 188
+ },
+ "propinebe": {
+  "en_name": "propineb",
+  "substance_id": 76,
+  "substance_name": "Propineb",
+  "cas_number": "9016-72-2",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Dithiocarbamates (dithiocarbamates expressed as CS2, including maneb, mancozeb, metiram, propineb, thiram and ziram)",
+  "pesticide_residue_id": 83
+ },
+ "propoxicarbazona (na forma de sal de sódio)": {
+  "en_name": "propoxycarbazone",
+  "substance_id": 708,
+  "substance_name": "Propoxycarbazone",
+  "cas_number": "145026-81-9",
+  "substance_status": "Approved",
+  "pesticide_residue_linked": "Propoxycarbazone (propoxycarbazone, its salts and 2-hydroxypropoxycarbazone expressed as propoxycarbazone)",
+  "pesticide_residue_id": 191
+ },
+ "quinoxifena": {
+  "en_name": "quinoxyfen",
+  "substance_id": 1109,
+  "substance_name": "Quinoxyfen",
+  "cas_number": "124495-18-7",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Quinoxyfen",
+  "pesticide_residue_id": 201
+ },
+ "tetradecan-1-ol": {
+  "en_name": "tetradecan-1-ol",
+  "substance_id": 1384,
+  "substance_name": "Tetradecan-1-ol (SCLP Alcohols)",
+  "cas_number": "63393-82-8",
+  "substance_status": "Approved",
+  "pesticide_residue_linked": "Straight Chain Lepidopteran Pheromones (SCLP)",
+  "pesticide_residue_id": 3350
+ },
+ "tiofanato-metilo": {
+  "en_name": "thiophanate-methyl",
+  "substance_id": 807,
+  "substance_name": "Thiophanate-methyl",
+  "cas_number": "23564-05-8",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Thiophanate-methyl",
+  "pesticide_residue_id": 213
+ },
+ "tirame": {
+  "en_name": "thiram",
+  "substance_id": 141,
+  "substance_name": "Thiram",
+  "cas_number": "137-26-8",
+  "substance_status": "Not approved",
+  "pesticide_residue_linked": "Dithiocarbamates (dithiocarbamates expressed as CS2, including maneb, mancozeb, metiram, propineb, thiram and ziram)",
+  "pesticide_residue_id": 83
+ },
+ "triticonazol": {
+  "en_name": "triticonazole",
+  "substance_id": 185,
+  "substance_name": "Triticonazole",
+  "cas_number": "131983-72-7 ",
+  "substance_status": "Approved",
+  "pesticide_residue_linked": "Triticonazole",
+  "pesticide_residue_id": 224
+ },
+ "MCPA (na forma de sal de dimetilamónio)": {
+  "en_name": "MCPA",
+  "substance_id": 1324,
+  "substance_name": "MCPA",
+  "cas_number": "94-74-6",
+  "substance_status": "Approved",
+  "pesticide_residue_linked": "MCPA and MCPB (MCPA, MCPB including their salts, esters and conjugates expressed as MCPA)",
+  "pesticide_residue_id": 145,
+  "nota": "CAS não consta na base da UE (\"see remark\"); valor 94-74-6 confirmado externamente."
+ },
+ "MCPA (na forma de sal de potássio)": {
+  "en_name": "MCPA",
+  "substance_id": 1324,
+  "substance_name": "MCPA",
+  "cas_number": "94-74-6",
+  "substance_status": "Approved",
+  "pesticide_residue_linked": "MCPA and MCPB (MCPA, MCPB including their salts, esters and conjugates expressed as MCPA)",
+  "pesticide_residue_id": 145,
+  "nota": "CAS não consta na base da UE (\"see remark\"); valor 94-74-6 confirmado externamente."
  }
 }
