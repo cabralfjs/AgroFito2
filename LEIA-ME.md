@@ -5,6 +5,8 @@
 | Ficheiro | O que é | Ação |
 |---|---|---|
 | `.nojekyll` | Ficheiro vazio. Desliga o processamento Jekyll do GitHub Pages, que por defeito ignora ficheiros/pastas começadas por `_` (como `lmr/_index.json`). **Sem isto, o LMR não funciona.** | Copiar para a raiz. |
+| `index.html` | Página principal, com o cartão novo "Consulta de LMR por Cultura" e textos de aviso/fonte de dados atualizados. | **Substitui** o `index.html` atual. |
+| `lmr.html` | Página nova: consulta direta de LMR por cultura (sem passar pelo `usos.html`). Lê os mesmos ficheiros em `lmr/` gerados pelo *workflow*. | Adicionar à raiz (ficheiro novo). |
 | `usos.html` | A página de usos autorizados, com: (1) a secção de LMR no painel de "Detalhe"; (2) a correção da barra de filtros a desalinhar as barras de baixo. | **Substitui** o `usos.html` atual. |
 | `produtos.html` | A ficha de produtos, com a mesma correção da barra de filtros aplicada (a barra de legenda deixa de desalinhar). Não tem alterações de LMR — o LMR só existe em `usos.html`. | **Substitui** o `produtos.html` atual. |
 | `update_lmr.py` | Script que descarrega os dados da Comissão Europeia e gera a pasta `lmr/`. | Copiar para a raiz. Não precisas de correr manualmente — o *workflow* trata disso. |

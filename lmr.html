@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consulta de LMR por Cultura — AgroFito</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 52 52'%3E%3Ccircle cx='26' cy='26' r='26' fill='%230f3d22'/%3E%3Cpath d='M26 44 C26 44 12 34 12 21 C12 13 18 8 26 8 C34 8 40 13 40 21 C40 34 26 44 26 44Z' fill='%237cb83a'/%3E%3C/svg%3E">
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#0f3d22">
+<meta name="description" content="Consulta direta de Limites Máximos de Resíduos (LMR) por cultura, com base na EU Pesticides Database da Comissão Europeia.">
+<link rel="canonical" href="https://agrofito.org/lmr.html">
+
+<style>
+:root{--g1:#0f3d22;--g2:#1a5c35;--g3:#2d7a4f;--lime:#7cb83a;--lime2:#c5e89a;--cream:#f4f0e8;--paper:#fdfaf4;--ink:#18180f;--muted:#6b6b5a;--border:#d6d0c4;--tag-bg:#e6f2da;--tag-fg:#1a5c35}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;display:flex;flex-direction:column}
+header{background:linear-gradient(135deg,var(--g1) 0%,var(--g2) 60%,var(--g3) 100%);padding:.75rem 2rem;display:flex;align-items:center;gap:1.25rem;box-shadow:0 4px 24px rgba(0,0,0,.25)}
+.logo-svg{width:38px;height:38px;flex-shrink:0}
+.logo-text h1{font-size:1.3rem;font-weight:700;color:#fff;letter-spacing:-.03em;line-height:1}
+.logo-text h1 span{font-weight:300;opacity:.85}
+.logo-text p{font-size:.72rem;color:var(--lime2);margin-top:.15rem;letter-spacing:.02em}
+.back-link{margin-left:auto;color:#fff;opacity:.85;text-decoration:none;font-size:.82rem;font-weight:600;display:flex;align-items:center;gap:.35rem}
+.back-link:hover{opacity:1}
+
+main{flex:1;padding:1.5rem 2rem 3rem;max-width:900px;width:100%;margin:0 auto}
+.page-intro{text-align:center;margin-bottom:1.5rem}
+.page-intro h2{font-size:1.35rem;font-weight:700;color:var(--g2);margin-bottom:.4rem}
+.page-intro p{font-size:.85rem;color:var(--muted);max-width:600px;margin:0 auto;line-height:1.5}
+
+.search-card{background:var(--paper);border:1.5px solid var(--border);border-radius:12px;padding:1.25rem;box-shadow:0 4px 20px rgba(0,0,0,.06);margin-bottom:1.25rem}
+.field-row{display:flex;gap:.75rem;flex-wrap:wrap}
+.field{display:flex;flex-direction:column;gap:.3rem;flex:1;min-width:220px}
+.field label{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+.field select,.field input{padding:.6rem .75rem;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;font-family:inherit;background:#fff}
+.field select:focus,.field input:focus{outline:none;border-color:var(--g3)}
+
+#status-msg{text-align:center;color:var(--muted);font-size:.85rem;padding:2rem 0}
+#coverage-note{text-align:center;color:var(--muted);font-size:.74rem;margin-top:.6rem;line-height:1.4}
+
+#results{display:none}
+#results.active{display:block}
+.results-header{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:.5rem;margin-bottom:.75rem}
+.results-header h3{font-size:1.05rem;font-weight:700;color:var(--g2)}
+.results-count{font-size:.78rem;color:var(--muted)}
+
+table{width:100%;border-collapse:collapse;background:var(--paper);border-radius:10px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.05)}
+thead th{background:var(--g2);color:#fff;text-align:left;padding:.55rem .75rem;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.02em}
+tbody td{padding:.55rem .75rem;font-size:.82rem;border-bottom:1px solid var(--border)}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:nth-child(even){background:#faf7ef}
+.mrl-val{font-family:ui-monospace,SFMono-Regular,'Cascadia Code','Roboto Mono',Consolas,monospace;font-weight:700}
+.default-badge{font-size:.66rem;font-weight:700;color:#8a5a12;background:#f5e2bd;padding:1px 6px;border-radius:4px;margin-left:.4rem;white-space:nowrap}
+.produto-note{font-size:.72rem;color:var(--muted)}
+table a{color:var(--g3)}
+
+.disclaimer-box{background:#fff8e1;border:1.5px solid #f5d060;border-radius:8px;padding:.75rem 1rem;font-size:.76rem;color:#7a5200;line-height:1.5;margin-top:1.25rem;display:flex;gap:.6rem;align-items:flex-start}
+.disclaimer-box .icon{font-size:1rem;flex-shrink:0;margin-top:1px}
+
+.attribution{background:var(--g1);color:rgba(255,255,255,.75);padding:.75rem 2rem;text-align:center;font-size:.72rem;line-height:1.6;margin-top:auto}
+.attribution a{color:var(--lime2);text-decoration:underline}
+
+@media(max-width:600px){
+  header{padding:.65rem 1rem}
+  main{padding:1rem 1rem 2rem}
+  .back-link{font-size:.76rem}
+  table{font-size:.74rem}
+  thead th,tbody td{padding:.45rem .5rem}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <svg class="logo-svg" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="26" cy="26" r="26" fill="rgba(255,255,255,.12)"/>
+    <path d="M26 44 C26 44 12 34 12 21 C12 13 18 8 26 8 C34 8 40 13 40 21 C40 34 26 44 26 44Z" fill="#7cb83a"/>
+    <line x1="26" y1="10" x2="26" y2="42" stroke="rgba(255,255,255,.35)" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="26" y1="18" x2="16" y2="24" stroke="rgba(255,255,255,.25)" stroke-width="1" stroke-linecap="round"/>
+    <line x1="26" y1="18" x2="36" y2="24" stroke="rgba(255,255,255,.25)" stroke-width="1" stroke-linecap="round"/>
+  </svg>
+  <div class="logo-text">
+    <h1><span>Agro</span>Fito</h1>
+    <p>Consulta de Limites Máximos de Resíduos (LMR)</p>
+  </div>
+  <a class="back-link" href="index.html">← Página principal</a>
+</header>
+
+<main>
+  <div class="page-intro">
+    <h2>Consulta de LMR por Cultura</h2>
+    <p>Escolhe uma cultura para veres todos os Limites Máximos de Resíduos (LMR) aplicáveis, com base na base de dados oficial da Comissão Europeia.</p>
+  </div>
+
+  <div class="search-card">
+    <div class="field-row">
+      <div class="field">
+        <label for="f-cultura">Cultura</label>
+        <select id="f-cultura">
+          <option value="">A carregar culturas…</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="f-substancia">Filtrar substância</label>
+        <input type="text" id="f-substancia" placeholder="Ex.: cobre, azoto..." disabled>
+      </div>
+    </div>
+    <p id="coverage-note">Cobertura atual: 213 culturas mapeadas. Se a tua cultura não aparecer na lista, ainda não foi trabalhada — a lista está em expansão.</p>
+  </div>
+
+  <div id="status-msg">Escolhe uma cultura acima para consultar os LMR aplicáveis.</div>
+
+  <div id="results">
+    <div class="results-header">
+      <h3 id="results-title"></h3>
+      <span class="results-count" id="results-count"></span>
+    </div>
+    <table>
+      <thead>
+        <tr><th>Substância Ativa</th><th>LMR</th><th>Referência</th></tr>
+      </thead>
+      <tbody id="results-body"></tbody>
+    </table>
+  </div>
+
+  <div class="disclaimer-box">
+    <span class="icon">⚠️</span>
+    <span>
+      O LMR é o limite legal de resíduo no alimento colhido — não confirma nem infirma se um produto/substância está autorizado para uso nesta cultura em Portugal. Para essa informação, consulta a
+      <a href="usos.html" style="color:#7a5200;font-weight:600">Consulta de Condições de Utilização</a>.
+      Dados atualizados semanalmente a partir da <a href="https://food.ec.europa.eu/plants/pesticides/eu-pesticides-database_en" target="_blank" rel="noopener" style="color:#7a5200;font-weight:600">EU Pesticides Database</a>.
+    </span>
+  </div>
+</main>
+
+<div class="attribution">
+  <p>Fonte de dados: Comissão Europeia · <a href="https://food.ec.europa.eu/plants/pesticides/eu-pesticides-database_en" target="_blank" rel="noopener">EU Pesticides Database</a></p>
+  <p style="margin-top:.4rem;opacity:.8;font-size:.68rem">Projeto independente AgroFito, por Francisco Cabral</p>
+</div>
+
+<script>
+let LMR_INDEX = {};
+let CURRENT_DATA = {};
+
+function esc(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+async function init(){
+  const select = document.getElementById('f-cultura');
+  try{
+    LMR_INDEX = await fetch('lmr/_index.json').then(r=>r.json());
+  }catch(e){
+    select.innerHTML = '<option value="">Erro ao carregar lista de culturas</option>';
+    document.getElementById('status-msg').textContent = 'Não foi possível carregar a lista de culturas. Tenta recarregar a página.';
+    return;
+  }
+
+  const culturas = Object.keys(LMR_INDEX).sort((a,b)=>a.localeCompare(b,'pt'));
+  select.innerHTML = '<option value="">Selecionar cultura…</option>' +
+    culturas.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
+
+  select.addEventListener('change', onCulturaChange);
+  document.getElementById('f-substancia').addEventListener('input', renderTable);
+
+  // suporte a link direto tipo lmr.html?cultura=Macieira
+  const params = new URLSearchParams(location.search);
+  const culturaUrl = params.get('cultura');
+  if(culturaUrl && LMR_INDEX[culturaUrl]){
+    select.value = culturaUrl;
+    onCulturaChange();
+  }
+}
+
+async function onCulturaChange(){
+  const cultura = document.getElementById('f-cultura').value;
+  const searchBox = document.getElementById('f-substancia');
+  const statusMsg = document.getElementById('status-msg');
+  const results = document.getElementById('results');
+
+  if(!cultura){
+    results.classList.remove('active');
+    statusMsg.style.display = 'block';
+    statusMsg.textContent = 'Escolhe uma cultura acima para consultar os LMR aplicáveis.';
+    searchBox.disabled = true;
+    searchBox.value = '';
+    return;
+  }
+
+  statusMsg.style.display = 'block';
+  statusMsg.textContent = 'A carregar…';
+  results.classList.remove('active');
+
+  const ficheiro = LMR_INDEX[cultura];
+  try{
+    CURRENT_DATA = await fetch('lmr/'+ficheiro).then(r=>r.json());
+  }catch(e){
+    statusMsg.textContent = 'Não foi possível carregar os dados desta cultura.';
+    return;
+  }
+
+  history.replaceState(null, '', '?cultura='+encodeURIComponent(cultura));
+  document.getElementById('results-title').textContent = cultura;
+  searchBox.disabled = false;
+  searchBox.value = '';
+  statusMsg.style.display = 'none';
+  results.classList.add('active');
+  renderTable();
+}
+
+function renderTable(){
+  const filtro = document.getElementById('f-substancia').value.trim().toLowerCase();
+  const tbody = document.getElementById('results-body');
+  const entradas = Object.entries(CURRENT_DATA)
+    .filter(([sub]) => !filtro || sub.toLowerCase().includes(filtro))
+    .sort((a,b) => a[0].localeCompare(b[0],'pt'));
+
+  document.getElementById('results-count').textContent =
+    entradas.length + ' substância' + (entradas.length===1?'':'s');
+
+  if(!entradas.length){
+    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:var(--muted)">Nenhuma substância encontrada.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = entradas.map(([sub, info]) => {
+    const valores = Array.isArray(info) ? info : [info];
+    return valores.map((v,i) => `
+      <tr>
+        <td>${i===0 ? esc(sub) : ''}</td>
+        <td>
+          <span class="mrl-val">${v.mrl} mg/kg</span>
+          ${v.is_default ? '<span class="default-badge">valor por defeito</span>' : ''}
+          ${valores.length>1 ? `<div class="produto-note">${esc(v.produto_eu)}</div>` : ''}
+        </td>
+        <td>
+          <a href="${esc(v.url_regulamento)}" target="_blank" rel="noopener">${esc(v.regulamento)}</a>
+          ${v.alteracao ? `<div class="produto-note">alterado por <a href="${esc(v.url_alteracao)}" target="_blank" rel="noopener">${esc(v.alteracao)}</a></div>` : ''}
+        </td>
+      </tr>`).join('');
+  }).join('');
+}
+
+init();
+</script>
+</body>
+</html>
