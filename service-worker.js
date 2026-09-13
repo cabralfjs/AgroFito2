@@ -1,13 +1,24 @@
-const CACHE_NAME = 'agrofito-v2';
+const CACHE_NAME = 'agrofito-v3';
+
+// Só ficheiros verdadeiramente estáticos (raramente ou nunca mudam) ficam
+// em cache-primeiro. As páginas HTML SAÍRAM daqui de propósito - ver a
+// função fetch mais abaixo.
 const CORE_ASSETS = [
-  './',
-  './index.html',
-  './usos.html',
-  './produtos.html',
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
   './xlsx.min.js'
+];
+
+// Páginas da própria app: mudam com frequência (o site está em
+// desenvolvimento ativo), por isso vão sempre à rede primeiro para
+// garantir que quem visita recebe a versão mais recente. A cópia em
+// cache só serve de reserva para quando não há ligação.
+const NETWORK_FIRST_PAGES = [
+  './',
+  './index.html',
+  './usos.html',
+  './produtos.html'
 ];
 
 self.addEventListener('install', (event) => {
@@ -26,20 +37,31 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-function isCoreAsset(url) {
+function matchesList(url, list) {
   const path = new URL(url).pathname;
-  return CORE_ASSETS.some((a) => path.endsWith(a.replace('./', '/')) || path === '/' );
+  return list.some((a) => path.endsWith(a.replace('./', '/')) || path === '/');
 }
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
-  // Ficheiros da própria app (HTML, JS, ícones, manifest) — quase nunca
-  // mudam, por isso servimos logo da cache (rápido) e só vamos à rede
-  // se ainda não estiverem lá. Isto é o que estava a faltar antes, e o
-  // que causava a lentidão: tudo ia à rede primeiro, incluindo o
-  // xlsx.min.js (~1 MB) em todas as visitas.
-  if (isCoreAsset(event.request.url)) {
+  // Páginas HTML da app: rede primeiro, cache como reserva offline.
+  if (matchesList(event.request.url, NETWORK_FIRST_PAGES)) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy)).catch(() => {});
+          return response;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // Ficheiros verdadeiramente estáticos: cache primeiro, rede só se
+  // ainda não estiverem guardados.
+  if (matchesList(event.request.url, CORE_ASSETS)) {
     event.respondWith(
       caches.match(event.request).then((cached) => {
         if (cached) return cached;
@@ -53,9 +75,9 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Tudo o resto (os dados JSON do SIFITO) — rede primeiro, para
-  // ficarem sempre atualizados quando há ligação; cache só como
-  // reserva para quando está offline.
+  // Tudo o resto (dados JSON do SIFITO, ficheiros de LMR) — rede
+  // primeiro, para ficarem sempre atualizados quando há ligação; cache
+  // só como reserva para quando está offline.
   event.respondWith(
     fetch(event.request)
       .then((response) => {

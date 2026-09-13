@@ -43,6 +43,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add lmr/
           git commit -m "Atualização automática dos dados de LMR ($(date -u +%Y-%m-%d))"
+          git pull --rebase origin "${{ github.ref_name }}"
           git push
 
       - name: Sem alterações

@@ -19,7 +19,10 @@ O que faz, por ordem:
      Formato de cada lmr/<slug>.json:
        { "<substância SIFITO>": {"mrl": ..., "unidade": "mg/kg",
                                    "is_default": bool,
-                                   "regulamento": ..., "url_regulamento": ...} }
+                                   "regulamento": "Regulamento (CE) n.º 396/2005",
+                                   "url_regulamento": <link à versão consolidada atual>,
+                                   "alteracao": <regulamento de alteração que introduziu este valor>,
+                                   "url_alteracao": <link a essa alteração específica>} }
 
      Formato de lmr/_index.json:
        { "<cultura SIFITO>": "<slug>.json" }
@@ -59,6 +62,17 @@ MRL_URL = (
 
 REQUEST_TIMEOUT = 180
 MAX_RETRIES = 3
+
+# A referência legal correta para um valor de LMR é sempre o Regulamento
+# (CE) n.º 396/2005 (o regulamento-quadro que estabelece o regime de LMR na
+# UE) - não o regulamento de alteração específico que introduziu aquele
+# valor em concreto (ex.: "Reg. (EU) 2017/623"), que é só o veículo legal
+# da alteração, não a base jurídica do LMR em si. Por isso fixamos aqui a
+# referência e a ligação à versão consolidada mais recente no EUR-Lex
+# (este URL sem data de consolidação mantém-se válido para sempre, a
+# própria página do EUR-Lex é que vai sempre mostrar a versão atual).
+REGULAMENTO_BASE = "Regulamento (CE) n.º 396/2005"
+REGULAMENTO_BASE_URL = "https://eur-lex.europa.eu/legal-content/pt/TXT/?uri=CELEX%3A32005R0396"
 
 # Alguns gateways da administração pública rejeitam (400/403) pedidos sem
 # cabeçalhos de um pedido "normal" de browser. Enviamos um User-Agent e
@@ -184,8 +198,10 @@ def build_lmr_data(culturas: dict, substancias: dict, mrl_index: dict) -> dict:
                     "mrl": valor,
                     "unidade": "mg/kg",
                     "is_default": is_default,
-                    "regulamento": rec.get("regulation_number"),
-                    "url_regulamento": rec.get("regulation_url"),
+                    "regulamento": REGULAMENTO_BASE,
+                    "url_regulamento": REGULAMENTO_BASE_URL,
+                    "alteracao": rec.get("regulation_number"),
+                    "url_alteracao": rec.get("regulation_url"),
                 })
 
             stats["combinacoes"] += 1

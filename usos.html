@@ -54,7 +54,7 @@ header h1{font-size:.95rem;font-weight:600;flex:1;letter-spacing:-.01em}
 .progress-label{font-size:.75rem;color:var(--muted);margin-top:.4rem;font-family:ui-monospace,SFMono-Regular,'Cascadia Code','Roboto Mono',Consolas,monospace}
 
 /* TOOLBAR */
-#toolbar{background:var(--paper);border-bottom:1px solid var(--border);padding:.9rem 1.5rem;display:none;flex-wrap:wrap;gap:.6rem;align-items:flex-end;position:sticky;top:58px;left:0;z-index:200}
+#toolbar{background:var(--paper);border-bottom:1px solid var(--border);padding:.9rem 1rem;display:none;flex-wrap:wrap;gap:.45rem;align-items:flex-end;position:sticky;top:58px;left:0;z-index:200}
 #toolbar.active{display:flex}
 .search-wrap{flex:0 1 280px;min-width:220px;max-width:320px;position:relative}
 .search-wrap input{width:100%;padding:.55rem .8rem .55rem 2.3rem;border:1.5px solid var(--border);border-radius:8px;font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:.83rem;background:#fff;transition:border-color .2s;color:var(--ink)}
@@ -62,11 +62,17 @@ header h1{font-size:.95rem;font-weight:600;flex:1;letter-spacing:-.01em}
 .search-wrap::before{content:'⌕';position:absolute;left:.7rem;top:50%;transform:translateY(-50%);font-size:1.1rem;color:var(--muted);pointer-events:none;line-height:1}
 .fg{display:flex;flex-direction:column;gap:.2rem}
 .fg label{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
-.fg select{padding:.5rem .65rem;border:1.5px solid var(--border);border-radius:8px;font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:.8rem;background:#fff;cursor:pointer;transition:border-color .2s;min-width:150px;max-width:240px}
+.fg select{padding:.5rem .65rem;border:1.5px solid var(--border);border-radius:8px;font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:.8rem;background:#fff;cursor:pointer;transition:border-color .2s;min-width:120px;max-width:190px}
+#f-pp{min-width:70px!important;max-width:80px!important}
 .fg select:focus{outline:none;border-color:var(--g3)}
+.fav-toggle-input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.fav-toggle-btn{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border:1.5px solid var(--border);border-radius:8px;background:#fff;cursor:pointer;font-size:1.05rem;transition:all .2s;flex-shrink:0}
+.fav-toggle-btn:hover{border-color:var(--g3)}
+.fav-toggle-input:checked+.fav-toggle-btn{background:#fff6d6;border-color:#e0b400;box-shadow:0 0 0 3px rgba(224,180,0,.15)}
+.fav-toggle-input:focus-visible+.fav-toggle-btn{outline:2px solid var(--g3);outline-offset:1px}
 
 /* ── COMBOBOX (searchable dropdown) ── */
-.cb-wrap{position:relative;min-width:160px;max-width:240px}
+.cb-wrap{position:relative;min-width:130px;max-width:190px}
 .cb-input-row{display:flex;align-items:center;border:1.5px solid var(--border);border-radius:8px;background:#fff;transition:border-color .2s;overflow:hidden}
 .cb-wrap.open .cb-input-row,
 .cb-input-row:focus-within{border-color:var(--g3);box-shadow:0 0 0 3px rgba(45,122,79,.1)}
@@ -138,8 +144,8 @@ header h1{font-size:.95rem;font-weight:600;flex:1;letter-spacing:-.01em}
 .cb-list div:last-child{border-bottom:none}
 
 #validade-bar{
-  display:none;flex-wrap:wrap;align-items:center;gap:.5rem;
-  padding:.5rem 1.5rem;background:var(--cream);
+  display:none;flex-wrap:wrap;align-items:center;gap:.4rem;
+  padding:.5rem 1rem;background:var(--cream);
   border-bottom:1px solid var(--border);
   position:sticky;left:0;
 }
@@ -148,7 +154,7 @@ header h1{font-size:.95rem;font-weight:600;flex:1;letter-spacing:-.01em}
 .vb-label{font-weight:700;color:var(--muted);font-size:.66rem;white-space:nowrap}
 .vb-chip{
   background:#fff;border:1.5px solid var(--border);border-radius:20px;
-  padding:.3rem .7rem;font-size:.72rem;font-weight:600;color:var(--ink);
+  padding:.3rem .6rem;font-size:.72rem;font-weight:600;color:var(--ink);
   cursor:pointer;white-space:nowrap;transition:all .15s;font-family:inherit;
 }
 .vb-chip:hover{border-color:var(--g3)}
@@ -312,6 +318,8 @@ hr.dp-sep{border:none;border-top:1px solid var(--border);margin:.75rem 0}
 }
 .lmr-meta{font-size:.78rem;color:#666;margin-top:.15rem}
 .lmr-meta a{color:#4a7c3c}
+.lmr-meta-alt{color:#999;font-size:.73rem}
+.lmr-meta-alt a{color:#8aa87c}
 .lmr-disclaimer{font-size:.78rem;color:#888;margin-top:.6rem;line-height:1.4}
 </style>
 </head>
@@ -435,10 +443,8 @@ hr.dp-sep{border:none;border-top:1px solid var(--border);margin:.75rem 0}
     </select>
   </div>
   <button class="btn btn-ghost" onclick="clearFilters()">✕ Limpar</button>
-  <label style="display:flex;align-items:center;gap:.35rem;font-size:.8rem;font-weight:600;color:var(--ink);cursor:pointer;white-space:nowrap">
-    <input type="checkbox" id="f-fav-only" onchange="applyFilters()" style="width:16px;height:16px;cursor:pointer">
-    ⭐ Só favoritos
-  </label>
+  <input type="checkbox" id="f-fav-only" onchange="applyFilters()" class="fav-toggle-input">
+  <label for="f-fav-only" class="fav-toggle-btn" title="Mostrar só favoritos">⭐</label>
 </div>
 
 <!-- LEGEND BAR -->
@@ -1492,6 +1498,7 @@ function renderLMRBlocos(r, dadosCultura){
         ${v.is_default?'<span class="lmr-badge">valor por defeito</span>':''}
         <div class="lmr-meta">
           Produto UE: ${esc(v.produto_eu)}${v.regulamento?` · <a href="${esc(v.url_regulamento)}" target="_blank" rel="noopener">${esc(v.regulamento)}</a>`:''}
+          ${v.alteracao?`<span class="lmr-meta-alt"> (alterado por <a href="${esc(v.url_alteracao)}" target="_blank" rel="noopener">${esc(v.alteracao)}</a>)</span>`:''}
         </div>
       </div>`).join('');
   }).join('');

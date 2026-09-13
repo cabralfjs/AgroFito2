@@ -140,9 +140,7 @@ header{background:linear-gradient(135deg,var(--g1) 0%,var(--g2) 60%,var(--g3) 10
   <div class="notice-bar">
     <span class="icon">⚠️</span>
     <span>
-      <strong>Aviso:</strong> dados públicos da DGAV/SIFITO, actualizados semanalmente — podem não refletir alterações recentes.
-      Consulte sempre o site oficial em
-      <a href="https://sifito.dgav.pt/" target="_blank" rel="noopener noreferrer" style="color:#7a5200;font-weight:600">sifito.dgav.pt</a>.
+      <strong>Aviso:</strong> Os dados públicos da DGAV/SIFITO e dos Limites Máximos de Resíduos são atualizados semanalmente e podem não refletir alterações recentes. Consulte sempre as páginas oficiais.
     </span>
   </div>
 
@@ -154,9 +152,9 @@ header{background:linear-gradient(135deg,var(--g1) 0%,var(--g2) 60%,var(--g3) 10
 </div>
 
 <div class="attribution">
-  <p><strong>Fonte de dados:</strong> DGAV &nbsp;·&nbsp; Sistema de Gestão das Autorizações de Produtos Fitofarmacêuticos <a href="https://sifito.dgav.pt/" target="_blank" rel="noopener noreferrer">SIFITO</a></p>
+  <p><strong>Fonte de dados:</strong> DGAV/<a href="https://sifito.dgav.pt/" target="_blank" rel="noopener noreferrer">SIFITO</a> &nbsp;·&nbsp; Comissão Europeia/<a href="https://food.ec.europa.eu/plants/pesticides/eu-pesticides-database_en" target="_blank" rel="noopener noreferrer">EU Pesticides Database</a></p>
   <p style="margin-top:.4rem;opacity:.8;font-size:.72rem">
-    Projeto independente, sem afiliação com a DGAV, por <a href="mailto:info@agrofito.org">Francisco Cabral</a> &nbsp;·&nbsp; © 2026 &nbsp;·&nbsp; V1.3
+    Projeto independente, sem afiliação com a DGAV, por <a href="mailto:info@agrofito.org">Francisco Cabral</a> &nbsp;·&nbsp; © 2026 &nbsp;·&nbsp; V1.4
   </p>
   <p style="margin-top:.5rem;opacity:.55;font-size:.68rem">
     <strong>Privacidade:</strong> não recolhemos dados pessoais. Os ficheiros importados ficam guardados só no seu navegador.
@@ -195,7 +193,7 @@ header{background:linear-gradient(135deg,var(--g1) 0%,var(--g2) 60%,var(--g3) 10
    existe este evento — lá a instalação é via "Adicionar ao ecrã principal"
    no menu de partilha do Safari, não há botão programático possível). */
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('./service-worker.js').catch(()=>{});
+  navigator.serviceWorker.register('./service-worker.js',{updateViaCache:'none'}).catch(()=>{});
 }
 let deferredInstallPrompt=null;
 window.addEventListener('beforeinstallprompt',(e)=>{

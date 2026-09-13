@@ -1138,14 +1138,6 @@
    "0300010"
   ]
  },
- "Chícharo": {
-  "eu_names": [
-   "Peas"
-  ],
-  "product_codes": [
-   "0300030"
-  ]
- },
  "Mirtilo-vermelho (=arando-vermelho)": {
   "eu_names": [
    "Berries and small fruits"
@@ -1168,6 +1160,570 @@
   ],
   "product_codes": [
    "0153010"
+  ]
+ },
+ "Couve-coração": {
+  "eu_names": [
+   "Head cabbages"
+  ],
+  "product_codes": [
+   "0242020"
+  ]
+ },
+ "Couve-repolho; Couve-coração": {
+  "eu_names": [
+   "Head cabbages"
+  ],
+  "product_codes": [
+   "0242020"
+  ]
+ },
+ "Couve-repolho; Couve-coração; Couve-lombarda; Couve-roxa": {
+  "eu_names": [
+   "Head cabbages"
+  ],
+  "product_codes": [
+   "0242020"
+  ]
+ },
+ "Couve-repolho; Couve-coração; Couve-roxa": {
+  "eu_names": [
+   "Head cabbages"
+  ],
+  "product_codes": [
+   "0242020"
+  ]
+ },
+ "Couve-repolho; Couve-coração; Couve-roxa; Couve-lombarda": {
+  "eu_names": [
+   "Head cabbages"
+  ],
+  "product_codes": [
+   "0242020"
+  ]
+ },
+ "Abóbora (abóbora-almiscarada, abóbora-manteiga)": {
+  "eu_names": [
+   "Pumpkins"
+  ],
+  "product_codes": [
+   "0233020"
+  ]
+ },
+ "Abóbora (abóbora-cabaça)": {
+  "eu_names": [
+   "Pumpkins"
+  ],
+  "product_codes": [
+   "0233020"
+  ]
+ },
+ "Abóbora (abóbora-chila)": {
+  "eu_names": [
+   "Pumpkins"
+  ],
+  "product_codes": [
+   "0233020"
+  ]
+ },
+ "Abóbora (abóbora-do-campo)": {
+  "eu_names": [
+   "Pumpkins"
+  ],
+  "product_codes": [
+   "0233020"
+  ]
+ },
+ "Abóbora (abóbora-menina)": {
+  "eu_names": [
+   "Pumpkins"
+  ],
+  "product_codes": [
+   "0233020"
+  ]
+ },
+ "Abóbora (abóbora-menina, abóbora-porqueira)": {
+  "eu_names": [
+   "Pumpkins"
+  ],
+  "product_codes": [
+   "0233020"
+  ]
+ },
+ "Abóbora (abóbora-menina, abóbora-porqueira, abóbora-almiscarada, abóbora-manteiga)": {
+  "eu_names": [
+   "Pumpkins"
+  ],
+  "product_codes": [
+   "0233020"
+  ]
+ },
+ "Abóbora (abóbora-oleífera)": {
+  "eu_names": [
+   "Pumpkins"
+  ],
+  "product_codes": [
+   "0233020"
+  ]
+ },
+ "Abóbora (abóbora-porqueira)": {
+  "eu_names": [
+   "Pumpkins"
+  ],
+  "product_codes": [
+   "0233020"
+  ]
+ },
+ "Aboborinha (=\"courgette\")": {
+  "eu_names": [
+   "Courgettes"
+  ],
+  "product_codes": [
+   "0232030"
+  ]
+ },
+ "Aipo (caule)": {
+  "eu_names": [
+   "Celeries"
+  ],
+  "product_codes": [
+   "0270030"
+  ]
+ },
+ "Aipo (folhas e caules)": {
+  "eu_names": [
+   "Celeries",
+   "Celery leaves"
+  ],
+  "product_codes": [
+   "0270030",
+   "0256030"
+  ]
+ },
+ "Aipo (folhas)": {
+  "eu_names": [
+   "Celery leaves"
+  ],
+  "product_codes": [
+   "0256030"
+  ]
+ },
+ "Alcachofra-de-Espanha (=cardo, cardo-manso, cardo-do-coalho)": {
+  "eu_names": [
+   "Cardoons"
+  ],
+  "product_codes": [
+   "0270020"
+  ]
+ },
+ "Amoreira": {
+  "eu_names": [
+   "Mulberries (black and white)"
+  ],
+  "product_codes": [
+   "0154060"
+  ]
+ },
+ "Beterraba (folhas)": {
+  "eu_names": [
+   "Chards/beet leaves"
+  ],
+  "product_codes": [
+   "0252030"
+  ]
+ },
+ "Beldroega": {
+  "eu_names": [
+   "Purslanes"
+  ],
+  "product_codes": [
+   "0252020"
+  ]
+ },
+ "Cânhamo-comum": {
+  "eu_names": [
+   "Hemp seeds"
+  ],
+  "product_codes": [
+   "0401140"
+  ]
+ },
+ "Cevada de inverno": {
+  "eu_names": [
+   "Barley"
+  ],
+  "product_codes": [
+   "0500010"
+  ]
+ },
+ "Cevada de primavera": {
+  "eu_names": [
+   "Barley"
+  ],
+  "product_codes": [
+   "0500010"
+  ]
+ },
+ "Cevada-dística": {
+  "eu_names": [
+   "Barley"
+  ],
+  "product_codes": [
+   "0500010"
+  ]
+ },
+ "Chicória-de-café": {
+  "eu_names": [
+   "Chicory roots"
+  ],
+  "product_codes": [
+   "0900030"
+  ]
+ },
+ "Chicórias": {
+  "eu_names": [
+   "Chicory roots"
+  ],
+  "product_codes": [
+   "0900030"
+  ]
+ },
+ "Couve-chinesa (=pak-choi)": {
+  "eu_names": [
+   "Chinese cabbages/pe-tsai"
+  ],
+  "product_codes": [
+   "0243010"
+  ]
+ },
+ "Couve-de-Pequim": {
+  "eu_names": [
+   "Chinese cabbages/pe-tsai"
+  ],
+  "product_codes": [
+   "0243010"
+  ]
+ },
+ "Couve-de-Pequim; Couve-chinesa (=pak-choi)": {
+  "eu_names": [
+   "Chinese cabbages/pe-tsai"
+  ],
+  "product_codes": [
+   "0243010"
+  ]
+ },
+ "Couve-frisada": {
+  "eu_names": [
+   "Kales"
+  ],
+  "product_codes": [
+   "0243020"
+  ]
+ },
+ "Couve-nabo (=rutabaga)": {
+  "eu_names": [
+   "Swedes/rutabagas"
+  ],
+  "product_codes": [
+   "0213100"
+  ]
+ },
+ "Couve-rábano": {
+  "eu_names": [
+   "(d) kohlrabies"
+  ],
+  "product_codes": [
+   "0244000"
+  ]
+ },
+ "Couve-roxa": {
+  "eu_names": [
+   "Head cabbages"
+  ],
+  "product_codes": [
+   "0242020"
+  ]
+ },
+ "Erva-doce (=anis)": {
+  "eu_names": [
+   "Anise/aniseed"
+  ],
+  "product_codes": [
+   "0810010"
+  ]
+ },
+ "Escorcioneira-da-terra-fria": {
+  "eu_names": [
+   "Salsifies"
+  ],
+  "product_codes": [
+   "0213090"
+  ]
+ },
+ "Espinafre-da-Nova-Zelândia": {
+  "eu_names": [
+   "Spinaches"
+  ],
+  "product_codes": [
+   "0252010"
+  ]
+ },
+ "Feno-grego (=fenacho)": {
+  "eu_names": [
+   "Fenugreek"
+  ],
+  "product_codes": [
+   "0810080"
+  ]
+ },
+ "Groselheira-negra; Groselheira-vermelha": {
+  "eu_names": [
+   "Currants (black, red and white)"
+  ],
+  "product_codes": [
+   "0154030"
+  ]
+ },
+ "Mostarda-castanha (=mostarda-da-Índia, mostarda-vermelha)": {
+  "eu_names": [
+   "Red mustards"
+  ],
+  "product_codes": [
+   "0251070"
+  ]
+ },
+ "Pastinaca": {
+  "eu_names": [
+   "Parsnips"
+  ],
+  "product_codes": [
+   "0213060"
+  ]
+ },
+ "Pereira-nashi": {
+  "eu_names": [
+   "Pears"
+  ],
+  "product_codes": [
+   "0130020"
+  ]
+ },
+ "Pereira; Pereira-nashi": {
+  "eu_names": [
+   "Pears"
+  ],
+  "product_codes": [
+   "0130020"
+  ]
+ },
+ "Pessegueiro-paraguaio": {
+  "eu_names": [
+   "Peaches"
+  ],
+  "product_codes": [
+   "0140030"
+  ]
+ },
+ "Ruibarbo": {
+  "eu_names": [
+   "Rhubarbs"
+  ],
+  "product_codes": [
+   "0270070"
+  ]
+ },
+ "Sabugueiros": {
+  "eu_names": [
+   "Elderberries"
+  ],
+  "product_codes": [
+   "0154080"
+  ]
+ },
+ "Salsa-de-raiz-grossa": {
+  "eu_names": [
+   "Parsley roots/Hamburg roots parsley"
+  ],
+  "product_codes": [
+   "0213070"
+  ]
+ },
+ "Toranjeira; Pomelo": {
+  "eu_names": [
+   "Grapefruits"
+  ],
+  "product_codes": [
+   "0110010"
+  ]
+ },
+ "Tremoceiro-amarelo": {
+  "eu_names": [
+   "Lupins/lupini beans"
+  ],
+  "product_codes": [
+   "0300040"
+  ]
+ },
+ "Tremoceiro-branco": {
+  "eu_names": [
+   "Lupins/lupini beans"
+  ],
+  "product_codes": [
+   "0300040"
+  ]
+ },
+ "Trigo-duro de inverno": {
+  "eu_names": [
+   "Wheat"
+  ],
+  "product_codes": [
+   "0500090"
+  ]
+ },
+ "Trigo-mole de inverno": {
+  "eu_names": [
+   "Wheat"
+  ],
+  "product_codes": [
+   "0500090"
+  ]
+ },
+ "Trigo-duro; Trigo-mole": {
+  "eu_names": [
+   "Wheat"
+  ],
+  "product_codes": [
+   "0500090"
+  ]
+ },
+ "Trigo-mole; Trigo-duro": {
+  "eu_names": [
+   "Wheat"
+  ],
+  "product_codes": [
+   "0500090"
+  ]
+ },
+ "Tupinambo": {
+  "eu_names": [
+   "Jerusalem artichokes"
+  ],
+  "product_codes": [
+   "0213050"
+  ]
+ },
+ "Arroz (marachas dos arrozais)": {
+  "eu_names": [
+   "Rice"
+  ],
+  "product_codes": [
+   "0500060"
+  ]
+ },
+ "Escarola (=chicória-frisada, chicória-de-folha-larga); Endívia (=chicória \"witloof\", chicória-de-Bruxelas)": {
+  "eu_names": [
+   "Escaroles/broad-leaved endives",
+   "(e) witloofs/Belgian endives"
+  ],
+  "product_codes": [
+   "0251030",
+   "0255000"
+  ]
+ },
+ "Citrinos (laranjeira, limoeiro, lima, toranjeira, pomelo e tangerineira)": {
+  "eu_names": [
+   "Citrus fruits"
+  ],
+  "product_codes": [
+   "0110000"
+  ]
+ },
+ "Citrinos (laranjeira, limoeiro, mandarina, toranjeira)": {
+  "eu_names": [
+   "Citrus fruits"
+  ],
+  "product_codes": [
+   "0110000"
+  ]
+ },
+ "Laranjeira; Limoeiro; Tangerineira (inclui clementina e híbridos); Toranjeira; Lima": {
+  "eu_names": [
+   "Citrus fruits"
+  ],
+  "product_codes": [
+   "0110000"
+  ]
+ },
+ "Erva-cidreira": {
+  "eu_names": [
+   "(f) herbs and edible flowers"
+  ],
+  "product_codes": [
+   "0256000"
+  ]
+ },
+ "Hissopo": {
+  "eu_names": [
+   "(f) herbs and edible flowers"
+  ],
+  "product_codes": [
+   "0256000"
+  ]
+ },
+ "Milefólio": {
+  "eu_names": [
+   "(f) herbs and edible flowers"
+  ],
+  "product_codes": [
+   "0256000"
+  ]
+ },
+ "Mitsuba": {
+  "eu_names": [
+   "(f) herbs and edible flowers"
+  ],
+  "product_codes": [
+   "0256000"
+  ]
+ },
+ "Perila": {
+  "eu_names": [
+   "(f) herbs and edible flowers"
+  ],
+  "product_codes": [
+   "0256000"
+  ]
+ },
+ "Pimpinela": {
+  "eu_names": [
+   "(f) herbs and edible flowers"
+  ],
+  "product_codes": [
+   "0256000"
+  ]
+ },
+ "Poejo": {
+  "eu_names": [
+   "(f) herbs and edible flowers"
+  ],
+  "product_codes": [
+   "0256000"
+  ]
+ },
+ "Segurelha": {
+  "eu_names": [
+   "(f) herbs and edible flowers"
+  ],
+  "product_codes": [
+   "0256000"
+  ]
+ },
+ "Mastruço": {
+  "eu_names": [
+   "(f) herbs and edible flowers"
+  ],
+  "product_codes": [
+   "0256000"
   ]
  }
 }
