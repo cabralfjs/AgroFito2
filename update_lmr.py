@@ -193,6 +193,14 @@ def build_lmr_data(culturas: dict, substancias: dict, mrl_index: dict) -> dict:
                 valor, is_default = parse_mrl_value(rec.get("mrl_value_only") or rec.get("mrl_value"))
                 if valor is None:
                     continue
+                product_id = rec.get("product_id")
+                url_consulta_ue = None
+                if product_id is not None:
+                    url_consulta_ue = (
+                        "https://ec.europa.eu/food/plant/pesticides/eu-pesticides-database/"
+                        f"start/screen/mrls/details?lg_code=EN&pest_res_id_list={residue_id}"
+                        f"&product_id_list={int(product_id)}"
+                    )
                 valores_encontrados.append({
                     "produto_eu": rec.get("product_name"),
                     "mrl": valor,
@@ -202,6 +210,7 @@ def build_lmr_data(culturas: dict, substancias: dict, mrl_index: dict) -> dict:
                     "url_regulamento": REGULAMENTO_BASE_URL,
                     "alteracao": rec.get("regulation_number"),
                     "url_alteracao": rec.get("regulation_url"),
+                    "url_consulta_ue": url_consulta_ue,
                 })
 
             stats["combinacoes"] += 1

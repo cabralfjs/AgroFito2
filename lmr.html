@@ -233,6 +233,7 @@ function renderTable(){
         <td>
           <a href="${esc(v.url_regulamento)}" target="_blank" rel="noopener">${esc(v.regulamento)}</a>
           ${v.alteracao ? `<div class="produto-note">alterado por <a href="${esc(v.url_alteracao)}" target="_blank" rel="noopener">${esc(v.alteracao)}</a></div>` : ''}
+          ${v.url_consulta_ue ? `<div class="produto-note"><a href="${esc(v.url_consulta_ue)}" target="_blank" rel="noopener">Ver na base da UE ↗</a></div>` : ''}
         </td>
       </tr>`).join('');
   }).join('');
