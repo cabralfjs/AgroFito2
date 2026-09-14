@@ -65,14 +65,6 @@ header{background:linear-gradient(135deg,var(--g1) 0%,var(--g2) 60%,var(--g3) 10
 .module-cta:hover{background:var(--g3)}
 .arrow{transition:transform .15s}
 .module-card:hover .arrow{transform:translateX(4px)}
-#changes-highlight{display:none;max-width:860px;width:100%}
-#changes-highlight.active{display:block}
-.ch-box{
-  background:var(--paper);border:1.5px solid var(--lime);border-radius:10px;
-  padding:.75rem 1.1rem;font-size:.82rem;color:var(--ink);line-height:1.5;
-  display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;
-}
-.ch-box .icon{font-size:1.1rem;flex-shrink:0}
 .ch-box a{color:var(--g2);font-weight:700;text-decoration:underline;margin-left:auto}
 
 .notice-bar{max-width:860px;width:100%;background:#fff8e1;border:1.5px solid #f5d060;border-radius:8px;padding:.6rem 1rem;font-size:.76rem;color:#7a5200;line-height:1.5;display:flex;gap:.6rem;align-items:flex-start}
@@ -112,7 +104,7 @@ header{background:linear-gradient(135deg,var(--g1) 0%,var(--g2) 60%,var(--g3) 10
 </div>
 
 <div class="modules-section">
-  <div id="changes-highlight"></div>
+<!-- changes-highlight removido a pedido -->
   <div class="modules-grid">
     <a class="module-card" href="usos.html">
       <div class="module-icon">📋</div>
@@ -136,7 +128,7 @@ header{background:linear-gradient(135deg,var(--g1) 0%,var(--g2) 60%,var(--g3) 10
       <span class="module-cta">Consultar <span class="arrow">→</span></span>
     </a>
     <a class="module-card" href="lmr.html">
-      <div class="module-icon">🇪🇺</div>
+      <div class="module-icon">⚖️</div>
       <h3>Consulta de LMR por Cultura</h3>
       <p>Limites Máximos de Resíduos (LMR) diretamente da base oficial da Comissão Europeia. Escolhe uma cultura e vê todos os valores aplicáveis.</p>
       <div class="module-stats">
@@ -164,7 +156,7 @@ header{background:linear-gradient(135deg,var(--g1) 0%,var(--g2) 60%,var(--g3) 10
 <div class="attribution">
   <p><strong>Páginas Oficiais:</strong> DGAV/<a href="https://sifito.dgav.pt/" target="_blank" rel="noopener noreferrer">SIFITO</a> &nbsp;·&nbsp; Comissão Europeia/<a href="https://food.ec.europa.eu/plants/pesticides/eu-pesticides-database_en" target="_blank" rel="noopener noreferrer">EU Pesticides Database</a></p>
   <p style="margin-top:.4rem;opacity:.8;font-size:.72rem">
-    Projeto independente, sem afiliação com a DGAV, por <a href="mailto:info@agrofito.org">Francisco Cabral</a> &nbsp;·&nbsp; © 2026 &nbsp;·&nbsp; V1.4
+    Projeto independente, sem afiliação com a DGAV nem com a União Europeia, por <a href="mailto:info@agrofito.org">Francisco Cabral</a> &nbsp;·&nbsp; © 2026 &nbsp;·&nbsp; V1.4
   </p>
   <p style="margin-top:.5rem;opacity:.55;font-size:.68rem">
     <strong>Privacidade:</strong> não recolhemos dados pessoais. Os ficheiros importados ficam guardados só no seu navegador.
@@ -172,31 +164,6 @@ header{background:linear-gradient(135deg,var(--g1) 0%,var(--g2) 60%,var(--g3) 10
 </div>
 
 <script>
-/* Lê o alteracoes.json gerado pelo workflow semanal (compute_changes.py).
-   Se não existir ainda, ou não houver nada a assinalar, não mostra nada. */
-(async function(){
-  try{
-    const r=await fetch('./alteracoes.json',{cache:'no-cache'});
-    if(!r.ok) return;
-    const data=await r.json();
-    const u=data.usos||{}, p=data.produtos||{};
-    const totalCanc=(u.novas_canceladas||0)+(p.novas_canceladas||0);
-    const totalReat=(u.reativadas||0)+(p.reativadas||0);
-    if(!totalCanc && !totalReat) return;
-
-    const partes=[];
-    if(totalCanc) partes.push(`<strong>${totalCanc}</strong> produto${totalCanc===1?'':'s'} ficaram cancelados`);
-    if(totalReat) partes.push(`<strong>${totalReat}</strong> voltaram a ficar autorizados`);
-
-    document.getElementById('changes-highlight').innerHTML=`
-      <div class="ch-box">
-        <span class="icon">🌿</span>
-        <span>Esta semana: ${partes.join(' · ')}.</span>
-        <a href="usos.html">Ver detalhes →</a>
-      </div>`;
-    document.getElementById('changes-highlight').classList.add('active');
-  }catch(e){ /* sem alteracoes.json — não mostra nada */ }
-})();
 
 /* PWA: regista o service worker e mostra o botão "Instalar" quando o
    browser oferecer essa opção (Chrome/Edge no Android/PC; no iOS não

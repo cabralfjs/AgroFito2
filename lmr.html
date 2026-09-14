@@ -47,6 +47,8 @@ tbody tr:nth-child(even){background:#faf7ef}
 .mrl-val{font-family:ui-monospace,SFMono-Regular,'Cascadia Code','Roboto Mono',Consolas,monospace;font-weight:700}
 .default-badge{font-size:.66rem;font-weight:700;color:#8a5a12;background:#f5e2bd;padding:1px 6px;border-radius:4px;margin-left:.4rem;white-space:nowrap}
 .produto-note{font-size:.72rem;color:var(--muted)}
+.lmr-eu-link{display:inline-block;background:#e6f0fa;color:#1d5a99;padding:3px 9px;border-radius:5px;font-weight:600;text-decoration:none;font-size:.76rem}
+.lmr-eu-link:hover{background:#d3e6f7}
 table a{color:var(--g3)}
 
 .disclaimer-box{background:#fff8e1;border:1.5px solid #f5d060;border-radius:8px;padding:.75rem 1rem;font-size:.76rem;color:#7a5200;line-height:1.5;margin-top:1.25rem;display:flex;gap:.6rem;align-items:flex-start}
@@ -114,7 +116,7 @@ table a{color:var(--g3)}
     </div>
     <table>
       <thead>
-        <tr><th>Substância Ativa</th><th>LMR</th><th>Referência</th></tr>
+        <tr><th>Substância Ativa</th><th>LMR</th><th>Referência</th><th>Base da UE</th></tr>
       </thead>
       <tbody id="results-body"></tbody>
     </table>
@@ -216,7 +218,7 @@ function renderTable(){
     entradas.length + ' substância' + (entradas.length===1?'':'s');
 
   if(!entradas.length){
-    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:var(--muted)">Nenhuma substância encontrada.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--muted)">Nenhuma substância encontrada.</td></tr>';
     return;
   }
 
@@ -233,7 +235,9 @@ function renderTable(){
         <td>
           <a href="${esc(v.url_regulamento)}" target="_blank" rel="noopener">${esc(v.regulamento)}</a>
           ${v.alteracao ? `<div class="produto-note">alterado por <a href="${esc(v.url_alteracao)}" target="_blank" rel="noopener">${esc(v.alteracao)}</a></div>` : ''}
-          ${v.url_consulta_ue ? `<div class="produto-note"><a href="${esc(v.url_consulta_ue)}" target="_blank" rel="noopener">Ver na base da UE ↗</a></div>` : ''}
+        </td>
+        <td>
+          ${v.url_consulta_ue ? `<a href="${esc(v.url_consulta_ue)}" target="_blank" rel="noopener" class="lmr-eu-link">Ver na base da UE ↗</a>` : ''}
         </td>
       </tr>`).join('');
   }).join('');
