@@ -929,7 +929,8 @@ function showDetail(idx){
         ${estadoBadge}
         <div style="margin-top:.5rem;display:flex;flex-wrap:wrap;gap:.5rem">
           <a class="btn btn-ghost" style="text-decoration:none;display:inline-flex"
-             href="usos.html?q=${encodeURIComponent(r.designacao||'')}" target="_blank" rel="noopener">
+             href="usos.html?q=${encodeURIComponent(r.designacao||'')}"
+             onclick="window.open(this.href,'_blank','noopener');return false;">
             🌿 Ver Condições de Utilização
           </a>
           <a class="btn btn-ghost" style="text-decoration:none;display:inline-flex"

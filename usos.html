@@ -1513,7 +1513,8 @@ function showDetail(idx){
         ${estadoBadge}
         <div style="margin-top:.5rem">
           <a class="btn btn-ghost" style="text-decoration:none;display:inline-flex"
-             href="produtos.html?q=${encodeURIComponent(r.produto||'')}" target="_blank" rel="noopener">
+             href="produtos.html?q=${encodeURIComponent(r.produto||'')}"
+             onclick="window.open(this.href,'_blank','noopener');return false;">
             📦 Ver Ficha do Produto
           </a>
         </div>
