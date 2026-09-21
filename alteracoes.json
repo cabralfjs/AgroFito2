@@ -1,17 +1,28 @@
 {
-  "gerado_em": "2026-09-14T11:33:36+00:00",
+  "gerado_em": "2026-09-21T11:46:44+00:00",
   "usos": {
-    "novas_canceladas": 0,
+    "novas_canceladas": 2,
     "reativadas": 0,
-    "novos_registos": 0,
+    "novos_registos": 158,
     "removidos": 0,
-    "detalhe_canceladas": [],
+    "detalhe_canceladas": [
+      {
+        "label": "MALVIN 80 WG · Macieira · Moniliose",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "MALVIN 80 WG · Macieira · Pedrado",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      }
+    ],
     "detalhe_reativadas": []
   },
   "produtos": {
     "novas_canceladas": 0,
     "reativadas": 0,
-    "novos_registos": 0,
+    "novos_registos": 1,
     "removidos": 0,
     "detalhe_canceladas": [],
     "detalhe_reativadas": []
