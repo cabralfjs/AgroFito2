@@ -1,18 +1,33 @@
 {
-  "gerado_em": "2026-09-21T11:46:44+00:00",
+  "gerado_em": "2026-09-28T12:41:55+00:00",
   "usos": {
-    "novas_canceladas": 2,
+    "novas_canceladas": 5,
     "reativadas": 0,
-    "novos_registos": 158,
+    "novos_registos": 108,
     "removidos": 0,
     "detalhe_canceladas": [
       {
-        "label": "MALVIN 80 WG · Macieira · Moniliose",
+        "label": "PIRESAN · Morangueiro · Tripes",
         "de": "Autorizada",
         "para": "Cancelada — Venda Permitida"
       },
       {
-        "label": "MALVIN 80 WG · Macieira · Pedrado",
+        "label": "PIRESAN · Ornamentais (folhas e flores) · Tripes",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "PIRESAN · Pimenteiro · Tripes",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "PIRESAN · Tomateiro · Tripes",
+        "de": "Autorizada",
+        "para": "Cancelada — Venda Permitida"
+      },
+      {
+        "label": "PIRESAN · Beringela · Tripes",
         "de": "Autorizada",
         "para": "Cancelada — Venda Permitida"
       }
@@ -22,7 +37,7 @@
   "produtos": {
     "novas_canceladas": 0,
     "reativadas": 0,
-    "novos_registos": 1,
+    "novos_registos": 2,
     "removidos": 0,
     "detalhe_canceladas": [],
     "detalhe_reativadas": []
