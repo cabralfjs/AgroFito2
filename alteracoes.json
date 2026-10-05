@@ -1,43 +1,17 @@
 {
-  "gerado_em": "2026-09-28T12:41:55+00:00",
+  "gerado_em": "2026-10-05T13:22:51+00:00",
   "usos": {
-    "novas_canceladas": 5,
+    "novas_canceladas": 0,
     "reativadas": 0,
-    "novos_registos": 108,
+    "novos_registos": 362,
     "removidos": 0,
-    "detalhe_canceladas": [
-      {
-        "label": "PIRESAN · Morangueiro · Tripes",
-        "de": "Autorizada",
-        "para": "Cancelada — Venda Permitida"
-      },
-      {
-        "label": "PIRESAN · Ornamentais (folhas e flores) · Tripes",
-        "de": "Autorizada",
-        "para": "Cancelada — Venda Permitida"
-      },
-      {
-        "label": "PIRESAN · Pimenteiro · Tripes",
-        "de": "Autorizada",
-        "para": "Cancelada — Venda Permitida"
-      },
-      {
-        "label": "PIRESAN · Tomateiro · Tripes",
-        "de": "Autorizada",
-        "para": "Cancelada — Venda Permitida"
-      },
-      {
-        "label": "PIRESAN · Beringela · Tripes",
-        "de": "Autorizada",
-        "para": "Cancelada — Venda Permitida"
-      }
-    ],
+    "detalhe_canceladas": [],
     "detalhe_reativadas": []
   },
   "produtos": {
     "novas_canceladas": 0,
     "reativadas": 0,
-    "novos_registos": 2,
+    "novos_registos": 4,
     "removidos": 0,
     "detalhe_canceladas": [],
     "detalhe_reativadas": []
