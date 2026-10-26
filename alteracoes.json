@@ -1,18 +1,18 @@
 {
-  "gerado_em": "2026-10-19T12:02:52+00:00",
+  "gerado_em": "2026-10-26T12:18:07+00:00",
   "usos": {
     "novas_canceladas": 0,
     "reativadas": 0,
-    "novos_registos": 0,
-    "removidos": 0,
+    "novos_registos": 64,
+    "removidos": 2,
     "detalhe_canceladas": [],
     "detalhe_reativadas": []
   },
   "produtos": {
     "novas_canceladas": 0,
     "reativadas": 0,
-    "novos_registos": 0,
-    "removidos": 0,
+    "novos_registos": 6,
+    "removidos": 5,
     "detalhe_canceladas": [],
     "detalhe_reativadas": []
   }
